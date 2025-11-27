@@ -21,9 +21,10 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="nav-menu">
+                    <a href="{{ route('welcome') }}" class="nav-link">Home</a>
                     <a href="{{ route('home') }}" class="nav-link">Form</a>
-                    <a href="{{ route('about') }}" class="nav-link">Tentang</a>
-                    <a href="{{ route('kontak') }}" class="nav-link">Kontak</a>
+                    <a href="{{ route('about') }}" class="nav-link">About</a>
+                    <a href="{{ route('kontak') }}" class="nav-link">Contact</a>
                 </div>
             </div>
         </div>
@@ -38,9 +39,10 @@
             </button>
         </div>
         <div class="sidebar-menu">
-            <a href="{{ route('home') }}" class="sidebar-link">Isi Buku Tamu</a>
-            <a href="{{ route('about') }}" class="sidebar-link">Tentang</a>
-            <a href="{{ route('kontak') }}" class="sidebar-link">Kontak</a>
+            <a href="{{ route('welcome') }}" class="sidebar-link">Home</a>
+            <a href="{{ route('home') }}" class="sidebar-link">Form</a>
+            <a href="{{ route('about') }}" class="sidebar-link">About</a>
+            <a href="{{ route('kontak') }}" class="sidebar-link">Contact</a>
         </div>
     </div>
 

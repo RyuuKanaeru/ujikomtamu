@@ -27,19 +27,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('admin/accept') ? 'active' : '' }}" href="{{ route('tamu.accept.page') }}">
-                                <i class="fas fa-check-circle text-success"></i>
+                                <i class="fas fa-check-circle"></i>
                                 Accept
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('admin/pending') ? 'active' : '' }}" href="{{ route('tamu.pending.page') }}">
-                                <i class="fas fa-hourglass-half text-warning"></i>
+                                <i class="fas fa-hourglass-half"></i>
                                 Pending
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('admin/reject') ? 'active' : '' }}" href="{{ route('tamu.reject.page') }}">
-                                <i class="fas fa-times-circle text-danger"></i>
+                                <i class="fas fa-times-circle"></i>
                                 Reject
                             </a>
                         </li>
@@ -51,7 +51,7 @@
                         </li>
                         <li class="nav-item">
     <a class="nav-link {{ Request::is('admin/tamu-lama') ? 'active' : '' }}" href="{{ route('admin.tamu.lama') }}">
-        <i class="fas fa-history text-secondary"></i>
+        <i class="fas fa-history"></i>
         Reset Tamu Lama
     </a>
 </li>

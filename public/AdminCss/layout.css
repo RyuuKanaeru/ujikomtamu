@@ -55,18 +55,15 @@
             transition: all 0.3s ease;
             position: fixed;
             z-index: 1200;
-            box-shadow: 
-                4px 0 25px rgba(0, 0, 0, 0.2),
-                inset -1px 0 0 rgba(0, 255, 127, 0.2);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             border-right: 1px solid rgba(0, 255, 127, 0.1);
-            animation: sidebarGlow 4s ease-in-out infinite;
+            animation: none;
         }
 
         @keyframes sidebarGlow {
-            0% { box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2), inset -1px 0 0 rgba(0, 255, 127, 0.2); }
-            50% { box-shadow: 4px 0 30px rgba(0, 255, 127, 0.15), inset -1px 0 0 rgba(0, 255, 127, 0.3); }
-            100% { box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2), inset -1px 0 0 rgba(0, 255, 127, 0.2); }
+            0% { box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); }
+            100% { box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); }
         }
 
         /* Modern glass effect for sidebar */
@@ -661,57 +658,58 @@
             padding: 1rem 1.5rem;
             display: flex;
             align-items: center;
-            border-radius: 12px;
-            margin: 0.25rem 1rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0, 255, 127, 0);
-            background: rgba(255, 255, 255, 0.02);
+            border-radius: 0;
+            margin: 0;
+            transition: all 0.2s ease;
+            border: none;
+            background: transparent;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .sidebar .nav-link::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent, #00ff7f, transparent);
+            bottom: 0;
+            left: 1.5rem;
+            right: 1.5rem;
+            height: 3px;
+            background: #00ff7f;
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: width 0.3s ease;
+            width: 0;
         }
 
         .sidebar .nav-link:hover {
             color: #ffffff;
-            background: rgba(0, 255, 127, 0.1);
-            border: 1px solid rgba(0, 255, 127, 0.3);
-            transform: translateX(5px);
-            box-shadow: 
-                0 4px 15px rgba(0, 0, 0, 0.2),
-                0 2px 8px rgba(0, 255, 127, 0.1);
+            background: transparent;
+            border: none;
+            transform: none;
+            box-shadow: none;
         }
 
         .sidebar .nav-link:hover::before {
             opacity: 1;
+            width: 90%;
         }
 
         .sidebar .nav-link.active {
             color: #ffffff;
-            background: rgba(0, 255, 127, 0.15);
+            background: transparent;
             font-weight: 600;
-            border: 1px solid rgba(0, 255, 127, 0.4);
-            box-shadow: 
-                0 4px 15px rgba(0, 0, 0, 0.2),
-                0 2px 8px rgba(0, 255, 127, 0.2),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-            animation: pulseGlow 2s ease-in-out infinite;
+            border: none;
+            box-shadow: none;
+            animation: none;
+        }
+
+        .sidebar .nav-link.active::before {
+            opacity: 1;
+            width: 90%;
         }
 
         @keyframes pulseGlow {
-            0% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 255, 127, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
-            50% { box-shadow: 0 4px 20px rgba(0, 255, 127, 0.3), 0 2px 12px rgba(0, 255, 127, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2); }
-            100% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 255, 127, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
+            0% { opacity: 0; }
+            100% { opacity: 0; }
         }
 
         .sidebar .nav-link i {
@@ -719,11 +717,13 @@
             width: 10px;
             text-align: center;
             font-size: 1.1rem;
-            transition: transform 0.3s ease;
+            transition: none;
+            color: #ffffff;
         }
 
         .sidebar .nav-link:hover i {
-            transform: translateX(3px);
+            transform: none;
+            color: #ffffff;
         }
 
         #page-content-wrapper {

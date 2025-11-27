@@ -10,6 +10,10 @@ use App\Http\Controllers\ExportController;
 // Default route langsung ke form
 Route::get('/', [UserController::class, 'form'])->name('home');
 
+Route::get('/welcome', function () { 
+    return view('home.welcome');
+})->name('welcome');
+
 Route::get('/about', function () { 
     return view('home.about');
 })->name('about');

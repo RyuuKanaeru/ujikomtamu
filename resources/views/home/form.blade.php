@@ -96,22 +96,6 @@
 @endpush
 
 @section('content')
-    <!-- Intro Overlay -->
-    @if(!session('success'))
-    <div class="intro-overlay">
-        <div class="intro-content">
-            <div class="intro-icon">
-                <i class="fas fa-book-open"></i>
-            </div>
-            <h1 class="intro-title">Selamat Datang</h1>
-            <p class="intro-text">di Sistem Buku Tamu Digital PTUN Bandung</p>
-            <button class="intro-button">
-                <span>Mulai Mengisi</span>
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-    @endif
 
     <div class="container-fluid form-container {{ !session('success') ? 'hidden-form' : 'visible' }}">
         <div class="row justify-content-center">
@@ -253,35 +237,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <script>
-    // Intro Animation Handler
-    document.addEventListener('DOMContentLoaded', function() {
-        const overlay = document.querySelector('.intro-overlay');
-        const form = document.querySelector('.form-container');
-        const introButton = document.querySelector('.intro-button');
-
-        // Hanya jalankan jika overlay ada (tidak dalam kondisi success)
-        if (overlay && introButton) {
-            introButton.addEventListener('click', function() {
-                overlay.classList.add('fade-out');
-                form.classList.add('visible');
-                form.classList.remove('hidden-form');
-                
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 500);
-            });
-        }
-    });
-
-    // Inisialisasi smooth scroll untuk anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
 
 
     // SweetAlert sukses setelah submit
