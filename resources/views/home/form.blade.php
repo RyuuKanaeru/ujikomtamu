@@ -239,94 +239,84 @@
     <script>
 
 
-    // SweetAlert sukses setelah submit
-    @if(session('success'))
-    let timerInterval;
-    Swal.fire({
-        title: '🌟 Pengisian Sukses! 🌟',
-        html: `
-            <div class="success-message">
-                <div style="transform: scale(1.2); margin-bottom: 20px;">
-                    <i class="fas fa-check-circle fa-bounce" style="color: #008D00; font-size: 4em;"></i>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <h3 style="color: #008D00; font-size: 1.4em; margin-bottom: 10px; font-weight: 600;">
-                        Data Berhasil Disimpan!
+         @if(session('success'))
+            let timerInterval;
+            Swal.fire({
+                title: 'Berhasil!',
+                html: `
+                    <div style="margin-bottom: 10px;">
+                        <i class="fas fa-check-circle" 
+                            style="color: #008D00; font-size: 3.5em;"></i>
+                    </div>
+                    <h3 style="color: #008D00; font-size: 1.3em; font-weight: 600;">
+                        Data Berhasil Disimpan
                     </h3>
-                    <p style="color: #2f855a; font-size: 1.1em;">
+                    <p style="color: #2f855a; margin-top: 5px; font-size: 1em;">
                         Terima kasih atas kunjungan Anda di PTUN Bandung
                     </p>
-                </div>
-                <div class="countdown">
-                    <i class="fas fa-clock-rotate-left"></i> 
-                    Mengarahkan ke halaman about dalam <b style="color: #008D00"></b>
-                </div>
-            </div>
-        `,
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-            
-            // Update countdown timer
-            const b = toast.querySelector('b');
-            timerInterval = setInterval(() => {
-                b.textContent = Math.ceil(Swal.getTimerLeft() / 1000) + ' detik';
-            }, 100);
+                    <div class="countdown">
+                        Mengarahkan ke halaman about dalam 
+                        <b style="color:#008D00"></b>
+                    </div>
+                `,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
 
-            // Confetti effect
-            const duration = 3000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+                // Efek MUNCUL minimalis
+                showClass: {
+                    popup: `
+                        animate__animated 
+                        animate__fadeIn 
+                        animate__faster
+                    `
+                },
 
-            const randomInRange = (min, max) => Math.random() * (max - min) + min;
+                // Efek hilang normal (nanti fade-out halaman tetap jalan)
+                hideClass: {
+                    popup: `
+                        animate__animated 
+                        animate__fadeOut 
+                        animate__faster
+                    `
+                },
 
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
+                background: 'rgba(255,255,255,0.95)',
+                backdrop: `
+                    rgba(0,0,0,0.15)
+                    blur(2px)
+                `,
 
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
+                didOpen: (toast) => {
+                    const b = toast.querySelector('b');
+                    timerInterval = setInterval(() => {
+                        b.textContent = Math.ceil(Swal.getTimerLeft() / 1000) + ' detik';
+                    }, 100);
+                },
 
-                const particleCount = 50;
+                willClose: () => clearInterval(timerInterval)
+            }).then(function() {
 
-                // Confetti from multiple directions
-                confetti(Object.assign({}, defaults, { 
-                    particleCount,
-                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-                    colors: ['#008D00', '#00b82e', '#4CAF50', '#8BC34A']
-                }));
-                confetti(Object.assign({}, defaults, { 
-                    particleCount,
-                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-                    colors: ['#008D00', '#00b82e', '#4CAF50', '#8BC34A']
-                }));
-            }, 250);
-        },
-        willClose: () => {
-            clearInterval(timerInterval);
-        }
-    }).then(function() {
-        // Custom fade out animation
-        const fadeOut = document.createElement('style');
-        fadeOut.textContent = `
-            @keyframes customFadeOut {
-                from { opacity: 1; transform: scale(1); }
-                to { opacity: 0; transform: scale(0.95); }
-            }
-            body {
-                animation: customFadeOut 0.8s ease forwards !important;
-            }
-        `;
-        document.head.appendChild(fadeOut);
-        
-        setTimeout(() => {
-            window.location.href = '{{ route('about') }}';
-        }, 800);
-    });
-    @endif
+                // FADE OUT HALAMAN — INI TETAP DIPERTAHANKAN
+                const fadeOut = document.createElement('style');
+                fadeOut.textContent = `
+                    @keyframes customFadeOut {
+                        from { opacity: 1; transform: scale(1); }
+                        to { opacity: 0; transform: scale(0.95); }
+                    }
+                    body {
+                        animation: customFadeOut 0.8s ease forwards !important;
+                    }
+                `;
+                document.head.appendChild(fadeOut);
+
+                setTimeout(() => {
+                    window.location.href = '{{ route('about') }}';
+                }, 800);
+            });
+        @endif
+
+
 
     // Inisialisasi Flatpickr untuk input tanggal
     flatpickr("#waktu_datang", {

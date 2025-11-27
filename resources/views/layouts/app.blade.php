@@ -22,7 +22,7 @@
                 </button>
                 <div class="nav-menu">
                     <a href="{{ route('welcome') }}" class="nav-link">Home</a>
-                    <a href="{{ route('home') }}" class="nav-link">Form</a>
+                    <a href="{{ route('tamu.form') }}" class="nav-link">Form</a>
                     <a href="{{ route('about') }}" class="nav-link">About</a>
                     <a href="{{ route('kontak') }}" class="nav-link">Contact</a>
                 </div>

@@ -84,7 +84,7 @@ class HomeController extends Controller
 
         BukuTamu::create($data);
 
-        return redirect()->route('home')
+        return redirect()->route('tamu.form')
             ->with('success', 'Data tamu berhasil disimpan!');
     }
 

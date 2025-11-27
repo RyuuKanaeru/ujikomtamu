@@ -246,7 +246,7 @@
             <div class="cta-wrapper">
                 <h2 class="cta-title">Siap untuk Berkunjung?</h2>
                 <p class="cta-subtitle">Daftar kunjungan Anda sekarang melalui sistem Buku Tamu Digital</p>
-                <a href="{{ route('home') }}" class="nav-link btn btn-primary btn-large">
+                <a href="{{ route('tamu.form') }}" class="nav-link btn btn-primary btn-large">
                     Mulai Pendaftaran
                 </a>
             </div>
