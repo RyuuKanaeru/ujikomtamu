@@ -1,105 +1,113 @@
 @extends('admin.layout')
 
 @section('content')
-    <div class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="fas fa-list"></i> Daftar Tamu</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-list"></i> Daftar Tamu</h2>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            {{ session('success') }}
         </div>
+    @endif
 
-        @if(session('success'))
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                {{ session('success') }}
-            </div>
-        @endif
-        
-        @if(session('error'))
-            <div class="alert alert-error">
-                <i class="fas fa-exclamation-circle"></i>
-                {{ session('error') }}
-            </div>
-        @endif
+    @if(session('error'))
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ session('error') }}
+        </div>
+    @endif
 
-        <div class="card">
-            <div class="card-body p-0">
-                <div class="table-responsive-custom">
-                    <table class="table table-striped mb-0 responsive-table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Nama</th>
-                                <th>Alamat</th>
-                                <th>No. Telepon</th>
-                                <th>Keperluan</th>
-                                <th>Waktu Datang</th>
-                                <th>Foto</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($tamus as $tamu)
-                                <tr>
-                                    <td data-label="Nama">{{ $tamu->nama }}</td>
-                                    <td data-label="Alamat">{{ $tamu->alamat }}</td>
-                                    <td data-label="No. Telepon">{{ $tamu->no_telepon ?? '-' }}</td>
-                                    <td data-label="Keperluan">{{ $tamu->keperluan }}</td>
-                                    <td data-label="Waktu Datang">{{ \Carbon\Carbon::parse($tamu->waktu_datang)->format('d M Y') }}</td>
-                                    <td data-label="Foto">
-                                        @if($tamu->foto_wajah)
-                                            <img src="{{ asset('storage/' . $tamu->foto_wajah) }}" 
-                                                 alt="Foto {{ $tamu->nama }}" 
-                                                 class="img-thumbnail foto-zoom"
-                                                 style="height: 50px; width: 50px; object-fit: cover; cursor: pointer;"
-                                                 data-src="{{ asset('storage/' . $tamu->foto_wajah) }}">
-                                        @else
-                                            <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                    <td data-label="Aksi">
-                                        <div class="d-flex flex-wrap gap-1">
-                                            @if(isset($tamu->status) && $tamu->status === 'pending')
-                                                <form action="{{ route('tamu.accept', $tamu->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-success" title="Accept"><i class="fas fa-check"></i></button>
-                                                </form>
-                                                <form action="{{ route('tamu.reject', $tamu->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="Reject"><i class="fas fa-times"></i></button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('tamu.accept', $tamu->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-success" title="Accept"><i class="fas fa-check"></i></button>
-                                                </form>
-                                                @if(!isset($tamu->status) || $tamu->status === null)
-                                                <form action="{{ route('tamu.pending', $tamu->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-warning" title="Pending"><i class="fas fa-hourglass-half"></i></button>
-                                                </form>
-                                                @endif
-                                                <form action="{{ route('tamu.reject', $tamu->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="Reject"><i class="fas fa-times"></i></button>
-                                                </form>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <div class="text-muted">
-                                            <i class="fas fa-inbox fa-2x mb-2"></i>
-                                            <p class="mb-0">Belum ada tamu yang tercatat</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive-custom">
+                <table class="table responsive-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>No. Telepon</th>
+                            <th>Keperluan</th>
+                            <th>Waktu Datang</th>
+                            <th>Foto</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($tamus as $tamu)
+                        <tr>
+                            <td data-label="No">{{ $loop->iteration }}</td>
+                            <td data-label="Nama">{{ $tamu->nama }}</td>
+                            <td data-label="Alamat">{{ $tamu->alamat }}</td>
+                            <td data-label="No. Telepon">{{ $tamu->no_telepon ?? '-' }}</td>
+                            <td data-label="Keperluan">{{ $tamu->keperluan }}</td>
+                            <td data-label="Waktu Datang">{{ \Carbon\Carbon::parse($tamu->waktu_datang)->format('d M Y') }}</td>
+                            <td data-label="Foto">
+                                @if($tamu->foto_wajah)
+                                    <img src="{{ asset('storage/' . $tamu->foto_wajah) }}" 
+                                        alt="Foto {{ $tamu->nama }}" 
+                                        class="img-thumbnail foto-zoom"
+                                        style="height:50px;width:50px;object-fit:cover;cursor:pointer;"
+                                        data-src="{{ asset('storage/' . $tamu->foto_wajah) }}">
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td data-label="Aksi">
+                                <div class="d-flex flex-wrap gap-1">
+                                    <!-- Accept -->
+                                    <form action="{{ route('tamu.accept', $tamu->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="action-icon" title="Accept">
+                                            <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
+                                        </button>
+                                    </form>
+
+                                    <!-- Pending -->
+                                    @if(!isset($tamu->status) || $tamu->status === null || $tamu->status === 'pending')
+                                    <form action="{{ route('tamu.pending', $tamu->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="action-icon" title="Pending">
+                                            <svg viewBox="0 0 24 24">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M12 6v6l4 2"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    @endif
+
+                                    <!-- Reject -->
+                                    <form action="{{ route('tamu.reject', $tamu->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="action-icon" title="Reject">
+                                            <svg viewBox="0 0 24 24">
+                                                <line x1="6" y1="6" x2="18" y2="18"/>
+                                                <line x1="6" y1="18" x2="18" y2="6"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <div class="text-muted">
+                                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                                    <p class="mb-0">Belum ada tamu yang tercatat</p>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
 <!-- Modal Zoom Foto -->
 <div class="modal fade" id="zoomFotoModal" tabindex="-1" aria-labelledby="zoomFotoLabel" aria-hidden="true">
@@ -118,194 +126,116 @@
 
 @push('scripts')
 <style>
-    /* ============================================
-       RESPONSIVE TABLE STYLES
-       ============================================ */
+/* =========================
+   TABLE & RESPONSIVE
+========================= */
+.table-responsive-custom { 
+    overflow-x:auto; 
+}
 
-    .table-responsive-custom {
-        overflow-x: auto;
-    }
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+    table-layout: fixed; /* kunci supaya kolom ga melebar */
+    word-wrap: break-word; /* teks panjang wrap ke bawah */
+}
 
-    .responsive-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+.responsive-table th, .responsive-table td {
+    border:1px solid rgba(0,0,0,0.1);
+    padding:12px 15px;
+    font-size:0.95rem;
+    max-width:200px;
+    overflow-wrap: break-word;
+}
 
-    .responsive-table thead {
-        background-color: #2c3e50;
-        color: white;
-    }
+/* Atur lebar kolom spesifik */
+.responsive-table th:nth-child(1),
+.responsive-table td:nth-child(1) {
+    width: 70px; /* kolom No lebih kecil */
+}
 
-    .responsive-table th {
-        padding: 15px;
-        text-align: left;
-        font-weight: 600;
-        font-size: 0.95rem;
-        white-space: nowrap;
-        border-bottom: 2px solid #34495e;
-    }
+.responsive-table th:nth-child(5),
+.responsive-table td:nth-child(5) {
+    width: 300px; /* kolom Keperluan lebih besar */
+}
 
-    .responsive-table td {
-        padding: 15px;
-        border-bottom: 1px solid #ecf0f1;
-        word-wrap: break-word;
-        word-break: break-word;
-        overflow-wrap: break-word;
-        max-width: 300px;
-    }
+.responsive-table th {
+    background:#f0fff7;
+    color:#004d2f;
+    font-weight:600;
+}
 
-    .responsive-table tbody tr {
-        transition: background-color 0.3s ease;
-    }
+.responsive-table tbody tr:hover {
+    background:#f8f9fa;
+}
 
-    .responsive-table tbody tr:hover {
-        background-color: #f8f9fa;
-    }
+.responsive-table .img-thumbnail {
+    border-radius:6px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    /* Mobile Responsive - Stack Vertically */
-    @media (max-width: 768px) {
-        .responsive-table thead {
-            display: none;
-        }
+.responsive-table .img-thumbnail:hover {
+    transform: scale(1.1);
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
 
-        .responsive-table tbody,
-        .responsive-table tr,
-        .responsive-table td {
-            display: block;
-            width: 100%;
-        }
+/* ACTION ICON BUTTONS */
+.action-icon {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:36px; height:36px;
+    border-radius:8px;
+    background:#fff;
+    border:2px solid #00ff7f;
+    cursor:pointer;
+    padding:0;
+    transition: all 0.3s ease;
+}
 
-        .responsive-table tr {
-            margin-bottom: 20px;
-            border: 1px solid #ecf0f1;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
+.action-icon svg {
+    width:18px; height:18px;
+    fill:none;
+    stroke:#00ff7f;
+    stroke-width:2;
+    transition: all 0.3s ease;
+}
 
-        .responsive-table td {
-            padding: 12px 15px;
-            text-align: right;
-            padding-left: 40%;
-            position: relative;
-            border: none;
-            border-bottom: 1px solid #ecf0f1;
-            max-width: 100%;
-        }
+.action-icon:hover {
+    background:#00ff7f;
+}
 
-        .responsive-table td:last-child {
-            border-bottom: none;
-        }
+.action-icon:hover svg {
+    fill:#fff;
+    stroke:#004d2f;
+}
 
-        .responsive-table td::before {
-            content: attr(data-label);
-            position: absolute;
-            left: 15px;
-            font-weight: 600;
-            color: #2c3e50;
-            text-align: left;
-            width: 35%;
-            display: inline-block;
-        }
+/* RESPONSIVE */
+@media (max-width:768px) {
+    .responsive-table thead { display:none; }
+    .responsive-table tbody, .responsive-table tr, .responsive-table td { display:block; width:100%; }
+    .responsive-table tr { margin-bottom:20px; border:1px solid #ecf0f1; border-radius:8px; overflow:hidden; background:#fff; }
+    .responsive-table td { padding:12px 15px; text-align:right; padding-left:40%; position:relative; border:none; border-bottom:1px solid #ecf0f1; }
+    .responsive-table td:last-child { border-bottom:none; }
+    .responsive-table td::before { content:attr(data-label); position:absolute; left:15px; font-weight:600; color:#2c3e50; width:35%; text-align:left; display:inline-block; }
+    .responsive-table td[data-label="Aksi"]::before { display:none; text-align:left; padding-left:15px; }
+    .responsive-table td[data-label="Foto"]::before { display:none; text-align:center; padding-left:15px; }
+}
 
-        .responsive-table td[data-label="Aksi"] {
-            padding-left: 15px;
-            text-align: left;
-        }
+/* EMPTY STATE */
+.responsive-table tbody tr td[colspan] { text-align:center; padding:40px 20px !important; }
 
-        .responsive-table td[data-label="Aksi"]::before {
-            display: none;
-        }
-
-        .responsive-table td[data-label="Foto"] {
-            text-align: center;
-            padding-left: 15px;
-        }
-
-        .responsive-table td[data-label="Foto"]::before {
-            display: none;
-        }
-
-        .responsive-table .foto-zoom {
-            margin: 10px auto;
-        }
-
-        /* Stacking for long content */
-        .responsive-table td[data-label="Alamat"],
-        .responsive-table td[data-label="Keperluan"] {
-            word-break: break-word;
-            white-space: normal;
-        }
-    }
-
-    /* Tablet Responsive */
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .responsive-table td {
-            padding: 12px;
-            max-width: 150px;
-            font-size: 0.9rem;
-        }
-
-        .responsive-table th {
-            padding: 12px;
-            font-size: 0.9rem;
-        }
-    }
-
-    /* Desktop - Min adjustments */
-    @media (min-width: 1025px) {
-        .responsive-table td {
-            max-width: 250px;
-        }
-
-        .responsive-table td[data-label="Keperluan"] {
-            max-width: 300px;
-        }
-    }
-
-    /* Text Ellipsis for long content on desktop */
-    .responsive-table td {
-        white-space: normal;
-    }
-
-    /* Aksi buttons responsive */
-    .responsive-table td[data-label="Aksi"] .d-flex {
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-
-    .responsive-table td[data-label="Aksi"] .btn {
-        padding: 5px 10px;
-        font-size: 0.85rem;
-    }
-
-    /* Better foto display */
-    .responsive-table .img-thumbnail {
-        border-radius: 6px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .responsive-table .img-thumbnail:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Empty state styling */
-    .responsive-table tbody tr td[colspan] {
-        text-align: center;
-        padding: 40px 20px !important;
-    }
 </style>
 
 <script>
-document.querySelectorAll('.foto-zoom').forEach(function(img) {
-    img.addEventListener('click', function() {
-        var src = this.getAttribute('data-src');
-        var modalImg = document.getElementById('zoomFotoImg');
-        modalImg.src = src;
-        var modal = new bootstrap.Modal(document.getElementById('zoomFotoModal'));
-        modal.show();
+document.querySelectorAll('.foto-zoom').forEach(img=>{
+    img.addEventListener('click',function(){
+        document.getElementById('zoomFotoImg').src = this.getAttribute('data-src');
+        new bootstrap.Modal(document.getElementById('zoomFotoModal')).show();
     });
 });
 </script>

@@ -1,6 +1,23 @@
 @extends('admin.layout')
 
 @section('content')
+
+    <style>
+    /* Biar teks panjang turun ke bawah (wrap) */
+    .table td,
+    .table th {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+    }
+
+    /* Supaya kolom tidak maksa lebar */
+    .table {
+        table-layout: fixed !important;
+    }
+</style>
+
+
     <div class="container py-4">
         <h2 class="mb-4"><i class="fas fa-check-circle text-success"></i> Daftar Tamu Diterima (Accept)</h2>
         <div class="card">

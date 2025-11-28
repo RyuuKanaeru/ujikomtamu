@@ -15,6 +15,7 @@
                                 <th>Keperluan</th>
                                 <th>Waktu Datang</th>
                                 <th>Foto</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,10 +33,19 @@
                                             <span class="text-muted">-</span>
                                         @endif
                                     </td>
+                                    <td>
+                                        <form id="delete-form-{{ $tamu->id }}" action="{{ route('tamu.destroy', $tamu->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $tamu->id }}, '{{ $tamu->nama }}')">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4">
+                                    <td colspan="7" class="text-center py-4">
                                         <div class="text-muted">
                                             <i class="fas fa-inbox fa-2x mb-2"></i>
                                             <p class="mb-0">Belum ada tamu ditolak</p>
@@ -50,3 +60,24 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    function confirmDelete(tamuId, tamuName) {
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            text: `Apakah Anda yakin ingin menghapus data tamu "${tamuName}"? Tindakan ini tidak dapat dibatalkan.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + tamuId).submit();
+            }
+        });
+    }
+</script>
+@endpush

@@ -1,6 +1,22 @@
 @extends('admin.layout')
 
 @section('content')
+
+<style>
+    /* Supaya teks panjang auto turun ke bawah */
+    .table td, 
+    .table th {
+        white-space: normal !important; 
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+    }
+
+    /* Biar kolom tidak maksa lebar */
+    .table {
+        table-layout: fixed !important;
+    }
+</style>
+
     <div class="container py-4">
         <h2 class="mb-4"><i class="fas fa-hourglass-half text-warning"></i> Daftar Tamu Pending</h2>
         <div class="card">
