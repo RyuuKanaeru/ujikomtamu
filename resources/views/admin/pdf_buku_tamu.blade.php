@@ -7,71 +7,78 @@
     <meta charset="UTF-8">
     <title>Data Tamu Bulan {{ DateTime::createFromFormat('!m', $bulan)->format('F') }} {{ $tahun }}</title>
     <style>
+        @page {
+            size: A4 landscape;
+            margin: 10mm;
+        }
         body { 
             font-family: 'Helvetica', 'Arial', sans-serif; 
-            font-size: 11px;
+            font-size: 10px;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             background: #ffffff;
             color: #2d3748;
-            line-height: 1.4;
+            line-height: 1.3;
         }
         .header-section {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #e2e8f0;
         }
         .logo {
-            width: 70px;
+            width: 50px;
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         .title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
             color: #1a365d;
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
         .subtitle {
-            font-size: 14px;
+            font-size: 9px;
             color: #4a5568;
-            margin: 5px 0;
+            margin: 3px 0;
+            line-height: 1.2;
         }
         .period {
             display: inline-block;
             background: #edf2f7;
-            padding: 5px 15px;
+            padding: 3px 10px;
             border-radius: 15px;
             color: #2d3748;
-            font-size: 11px;
-            margin-top: 10px;
+            font-size: 9px;
+            margin-top: 5px;
         }
         table { 
             width: 100%; 
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 10px 0;
             border: 1px solid #ddd;
+            page-break-inside: avoid;
         }
         th { 
-            background-color: #ffffff;
+            background-color: #f7fafc;
             color: #2d3748;
             font-weight: bold;
-            padding: 12px 8px;
+            padding: 6px 4px;
             text-align: left;
             border: 1px solid #ddd;
-            font-size: 11px;
+            font-size: 9px;
         }
         td { 
-            padding: 8px 6px;
+            padding: 5px 4px;
             border: 1px solid #ddd;
             color: #4a5568;
-            font-size: 10px;
+            font-size: 9px;
             text-align: left;
             vertical-align: middle;
             background-color: #ffffff;
+            word-wrap: break-word;
         }
         tr:nth-child(even) {
             background: #ffffff;
@@ -106,13 +113,13 @@
             color: #4a5568;
         }
         .foto-tamu {
-            width: 50px;
-            height: 50px;
+            width: 35px;
+            height: 35px;
             display: block;
             margin: 0 auto;
             border: 1px solid #ddd;
             object-fit: cover;
-            border-radius: 4px;
+            border-radius: 3px;
             background-color: #fff;
         }
         .text-center {
@@ -147,14 +154,14 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 5%;">No</th>
-                <th style="width: 15%;">Nama</th>
-                <th style="width: 8%;">Foto</th>
-                <th style="width: 22%;">Alamat</th>
-                <th style="width: 12%;">No. Telepon</th>
-                <th style="width: 20%;">Keperluan</th>
+                <th style="width: 4%;">No</th>
+                <th style="width: 12%;">Nama</th>
+                <th style="width: 6%;">Foto</th>
+                <th style="width: 18%;">Alamat</th>
+                <th style="width: 10%;">No. Telepon</th>
+                <th style="width: 25%;">Keperluan</th>
                 <th style="width: 10%;">Tanggal</th>
-                <th style="width: 8%;">Status</th>
+                <th style="width: 10%;">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -191,6 +198,8 @@
         </tbody>
     </table>
 
-    <div style="margin-top: 30px; text-align: right; color: #666; font-size: 10px;">
+    <div style="margin-top: 15px; text-align: right; color: #666; font-size: 9px;">
+        Laporan Buku Tamu - {{ DateTime::createFromFormat('!m', $bulan)->format('F') }} {{ $tahun }}
+    </div>
 </body>
 </html>

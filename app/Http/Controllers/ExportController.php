@@ -50,7 +50,7 @@ class ExportController extends Controller
             'guestsMonth' => $guestsMonth,
             'bulan' => $bulan,
             'tahun' => $tahun
-        ]);
+        ])->setPaper('a4', 'landscape');
         $filename = 'buku_tamu_' . $bulan . '_' . $tahun . '.pdf';
         return $pdf->stream($filename);
     }
