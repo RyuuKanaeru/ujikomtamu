@@ -2,7 +2,6 @@
 
 <link rel="stylesheet" href="{{ asset('HomeCss/form.css') }}">
 
-
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -111,117 +110,132 @@
                         <form action="{{ route('tamu.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             
-                            <!-- Nama -->
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control @error('nama') is-invalid @enderror" 
-                                    id="nama" name="nama" value="{{ old('nama') }}" required
-                                    placeholder="Masukkan nama lengkap">
-                                <label for="nama">Nama Lengkap <span class="text-danger">*</span></label>
-                                @error('nama')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            <!-- Main Layout: Camera (Left) + Form (Right) -->
+                            <div class="form-layout-container">
+                                
+                                <!-- Camera Section (Left) -->
+                                <div class="camera-section">
+                                    <div class="camera-wrapper">
+                                        <div class="camera-title">
+                                            <i class="fas fa-camera"></i> Foto Wajah
+                                        </div>
+                                        
+                                        <!-- Circular Camera Container with Plus Icon -->
+                                        <div class="video-container" id="videoContainer">
+                                            <!-- Plus Icon (shows when camera not active) -->
+                                            <button type="button" class="camera-plus-btn" id="cameraToggleBtn" title="Aktifkan Kamera">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                            
+                                            <!-- Video element (hidden by default) -->
+                                            <video id="video" playsinline></video>
+                                            <canvas id="canvas" width="320" height="320" style="display:none;"></canvas>
+                                            
+                                            <!-- Photo Preview -->
+                                            <div id="photoPreview" class="photo-preview d-none">
+                                                <img id="photoResult" src="#" alt="Preview">
+                                            </div>
+                                            
+                                            <!-- Close button (appears when camera active) -->
+                                            <button type="button" class="camera-close-btn" id="closeCameraBtn" title="Tutup Kamera" style="display:none;">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
 
-                            <!-- Alamat -->
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control @error('alamat') is-invalid @enderror" 
-                                    id="alamat" name="alamat" value="{{ old('alamat') }}" required
-                                    placeholder="Masukkan alamat lengkap">
-                                <label for="alamat">Alamat <span class="text-danger">*</span></label>
-                                @error('alamat')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                        <!-- Capture Button (appears when camera is active) -->
+                                        <div class="camera-capture-section">
+                                            <button type="button" class="btn-capture" id="captureBtn" style="display:none;">
+                                                <i class="fas fa-camera"></i> Ambil Foto
+                                            </button>
+                                        </div>
 
-                            <!-- No Telepon -->
-                            <div class="form-floating mb-3">
-                                <input type="tel" class="form-control @error('no_telepon') is-invalid @enderror" 
-                                    id="no_telepon" name="no_telepon" value="{{ old('no_telepon') }}"
-                                    placeholder="Masukkan nomor telepon">
-                                <label for="no_telepon">Nomor Telepon</label>
-                                @error('no_telepon')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                        <!-- Photo Actions (appears after photo captured) -->
+                                        <div class="photo-actions" id="photoActions" style="display:none;">
+                                            <button type="button" class="btn-action btn-retake" id="retakeBtn">
+                                                <i class="fas fa-redo"></i> Ulang
+                                            </button>
+                                            <button type="button" class="btn-action btn-accept" id="acceptBtn">
+                                                <i class="fas fa-check"></i> Gunakan
+                                            </button>
+                                        </div>
 
-                            <!-- Keperluan -->
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control @error('keperluan') is-invalid @enderror" 
-                                    id="keperluan" name="keperluan" style="height: 100px" required
-                                    placeholder="Masukkan keperluan">{{ old('keperluan') }}</textarea>
-                                <label for="keperluan">Keperluan <span class="text-danger">*</span></label>
-                                @error('keperluan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Waktu Datang -->
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control @error('waktu_datang') is-invalid @enderror" 
-                                    id="waktu_datang" name="waktu_datang" 
-                                    value="{{ old('waktu_datang', now()->format('Y-m-d')) }}" required readonly>
-                                <label for="waktu_datang">Waktu Datang <span class="text-danger">*</span></label>
-                                @error('waktu_datang')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Foto Wajah Live -->
-                            <div class="mb-4">
-                                <div class="text-center mb-3">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-camera me-2 text-muted"></i>Foto Wajah (Live)
-                                    </label>
-                                    <div class="text-muted small">Ambil foto langsung dari kamera</div>
-                                </div>
-                                <div class="camera-controls">
-                                    <button type="button" class="btn btn-primary" id="startCameraBtn">
-                                        <i class="fas fa-video"></i> Aktifkan Kamera
-                                    </button>
-                                </div>
-                                <div class="text-center mb-2">
-                                    <div class="d-flex justify-content-end mb-2" style="max-width: 320px; margin: 0 auto;">
-                                        <button type="button" class="btn btn-warning btn-sm" id="closeCameraBtn" style="display:none;">
-                                            <i class="fas fa-times"></i> Tutup Kamera
-                                        </button>
-                                    </div>
-                                    <video id="video" width="320" height="240" playsinline style="border-radius: 8px; background: #eee; display:none; transform: scaleX(-1);"></video>
-                                    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-                                </div>
-                                <div class="d-flex justify-content-center mb-2">
-                                    <button type="button" class="btn btn-success" id="captureBtn" style="display:none;">
-                                        <i class="fas fa-camera"></i> Ambil Foto
-                                    </button>
-                                </div>
-                                <div id="photoPreview" class="mt-3 d-none text-center">
-                                    <img id="photoResult" src="#" alt="Preview" class="rounded img-fluid" style="max-height: 200px; object-fit: contain;">
-                                    <div class="mt-2">
-                                        <button type="button" class="btn btn-danger btn-sm" id="deletePhotoBtn">
-                                            <i class="fas fa-trash"></i> Hapus Foto
-                                        </button>
+                                        <input type="hidden" name="foto_wajah" id="foto_wajah_hidden">
+                                        @error('foto_wajah')
+                                            <div class="invalid-feedback d-block mt-3" style="text-align: center;">
+                                                <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
-                                <input type="hidden" name="foto_wajah" id="foto_wajah_hidden">
-                                @error('foto_wajah')
-                                    <div class="invalid-feedback d-block">
-                                        <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
+
+                                <!-- Form Section (Right) -->
+                                <div class="form-section">
+                                    
+                                    <!-- Nama -->
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control @error('nama') is-invalid @enderror" 
+                                            id="nama" name="nama" value="{{ old('nama') }}" required
+                                            placeholder="Masukkan nama lengkap">
+                                        <label for="nama">Nama Lengkap <span class="text-danger">*</span></label>
+                                        @error('nama')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                @enderror
-                            </div
 
+                                    <!-- Alamat -->
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control @error('alamat') is-invalid @enderror" 
+                                            id="alamat" name="alamat" value="{{ old('alamat') }}" required
+                                            placeholder="Masukkan alamat lengkap">
+                                        <label for="alamat">Alamat <span class="text-danger">*</span></label>
+                                        @error('alamat')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-                            <!-- Tombol Submit -->
-                            <div class="row g-3">
-                                <div class="col-6">
-                                    <a href="{{ route('home') }}" class="btn btn-outline-secondary w-100 py-3">
-                                        <i class="fas fa-arrow-left me-2"></i>Kembali
-                                    </a>
+                                    <!-- No Telepon -->
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" class="form-control @error('no_telepon') is-invalid @enderror" 
+                                            id="no_telepon" name="no_telepon" value="{{ old('no_telepon') }}"
+                                            placeholder="Masukkan nomor telepon">
+                                        <label for="no_telepon">Nomor Telepon</label>
+                                        @error('no_telepon')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Keperluan -->
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control @error('keperluan') is-invalid @enderror" 
+                                            id="keperluan" name="keperluan" style="height: 100px" required
+                                            placeholder="Masukkan keperluan">{{ old('keperluan') }}</textarea>
+                                        <label for="keperluan">Keperluan <span class="text-danger">*</span></label>
+                                        @error('keperluan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Waktu Datang -->
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control @error('waktu_datang') is-invalid @enderror" 
+                                            id="waktu_datang" name="waktu_datang" 
+                                            value="{{ old('waktu_datang', now()->format('Y-m-d')) }}" required readonly>
+                                        <label for="waktu_datang">Waktu Datang <span class="text-danger">*</span></label>
+                                        @error('waktu_datang')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <button type="submit" class="btn btn-primary w-100 py-3">
-                                        <i class="fas fa-paper-plane me-2"></i>Kirim
-                                    </button>
-                                </div>
+                            </div>
+
+                            <!-- Tombol Submit (Center Bottom) -->
+                            <div class="submit-buttons-section">
+                                <a href="{{ route('home') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Kirim
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -237,6 +251,165 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <script>
+        // ============================================
+        // CAMERA FUNCTIONALITY - NEW DESIGN
+        // ============================================
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const videoContainer = document.getElementById('videoContainer');
+        const cameraToggleBtn = document.getElementById('cameraToggleBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const closeCameraBtn = document.getElementById('closeCameraBtn');
+        const photoPreview = document.getElementById('photoPreview');
+        const photoResult = document.getElementById('photoResult');
+        const photoActions = document.getElementById('photoActions');
+        const retakeBtn = document.getElementById('retakeBtn');
+        const acceptBtn = document.getElementById('acceptBtn');
+        const fotoWajahHidden = document.getElementById('foto_wajah_hidden');
+
+        let cameraStream = null;
+        let currentPhotoData = null;
+
+        // Open camera when clicking plus icon
+        cameraToggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openCamera();
+        });
+
+        // Close camera button
+        closeCameraBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeCamera();
+        });
+
+        // Capture photo
+        captureBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            takePhoto();
+        });
+
+        // Retake photo
+        retakeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            resetCamera();
+        });
+
+        // Accept photo
+        acceptBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            confirmPhoto();
+        });
+
+        function openCamera() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    } 
+                })
+                    .then(function(stream) {
+                        cameraStream = stream;
+                        video.srcObject = stream;
+                        video.style.display = 'block';
+                        video.play();
+                        
+                        cameraToggleBtn.style.display = 'none';
+                        captureBtn.style.display = 'flex';
+                        closeCameraBtn.style.display = 'flex';
+                    })
+                    .catch(function(err) {
+                        alert('Tidak dapat mengakses kamera: ' + err.message);
+                    });
+            } else {
+                alert('Browser tidak mendukung akses kamera.');
+            }
+        }
+
+        function closeCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            video.style.display = 'none';
+            captureBtn.style.display = 'none';
+            closeCameraBtn.style.display = 'none';
+            photoActions.style.display = 'none';
+            cameraToggleBtn.style.display = 'flex';
+        }
+
+        function takePhoto() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = video.videoWidth;
+            tempCanvas.height = video.videoHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // Flip horizontal
+            tempCtx.translate(tempCanvas.width, 0);
+            tempCtx.scale(-1, 1);
+            tempCtx.drawImage(video, 0, 0);
+            tempCtx.setTransform(1, 0, 0, 1, 0, 0);
+
+            // Compress to JPEG
+            let quality = 0.7;
+            let dataUrl = tempCanvas.toDataURL('image/jpeg', quality);
+
+            function getSizeInKB(base64) {
+                const head = 'data:image/jpeg;base64,';
+                return Math.round((base64.length - head.length) * 3/4 / 1024);
+            }
+            
+            let size = getSizeInKB(dataUrl);
+            while ((size > 150 || size < 50) && (quality > 0.4 && quality < 0.9)) {
+                if (size > 150) quality -= 0.05;
+                else if (size < 50) quality += 0.05;
+                dataUrl = tempCanvas.toDataURL('image/jpeg', quality);
+                size = getSizeInKB(dataUrl);
+            }
+
+            currentPhotoData = dataUrl;
+            photoResult.src = dataUrl;
+            photoPreview.classList.remove('d-none');
+            
+            // Hide camera, show photo actions
+            video.style.display = 'none';
+            captureBtn.style.display = 'none';
+            closeCameraBtn.style.display = 'none';
+            photoActions.style.display = 'flex';
+        }
+
+        function resetCamera() {
+            photoPreview.classList.add('d-none');
+            photoResult.src = '#';
+            currentPhotoData = null;
+            photoActions.style.display = 'none';
+            
+            // Show video again
+            video.style.display = 'block';
+            captureBtn.style.display = 'flex';
+            closeCameraBtn.style.display = 'flex';
+        }
+
+        function confirmPhoto() {
+            if (currentPhotoData) {
+                fotoWajahHidden.value = currentPhotoData;
+                closeCamera();
+                // Keep photo preview visible
+                video.style.display = 'none';
+                photoPreview.classList.remove('d-none');
+                photoActions.style.display = 'none';
+                cameraToggleBtn.style.display = 'none';
+            }
+        }
+
+        // Inisialisasi Flatpickr untuk input tanggal
+        flatpickr("#waktu_datang", {
+            dateFormat: "Y-m-d",
+            allowInput: true,
+            disableMobile: true
+        });
 
 
          @if(session('success'))
@@ -318,109 +491,13 @@
 
 
 
+
+
     // Inisialisasi Flatpickr untuk input tanggal
     flatpickr("#waktu_datang", {
         dateFormat: "Y-m-d",
         allowInput: true,
-        disableMobile: true,
-        locale: "id"
-    });
-
-    // Live Camera untuk Foto Wajah
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const captureBtn = document.getElementById('captureBtn');
-    const startCameraBtn = document.getElementById('startCameraBtn');
-    const photoPreview = document.getElementById('photoPreview');
-    const photoResult = document.getElementById('photoResult');
-    const fotoWajahHidden = document.getElementById('foto_wajah_hidden');
-    const closeCameraBtn = document.getElementById('closeCameraBtn');
-    let cameraStream = null;
-
-    // Aktifkan kamera saat tombol diklik
-    startCameraBtn.addEventListener('click', function() {
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(stream) {
-                    cameraStream = stream;
-                    video.srcObject = stream;
-                    video.style.display = 'block';
-                    captureBtn.style.display = 'inline-block';
-                    closeCameraBtn.style.display = 'inline-block';
-                    startCameraBtn.style.display = 'none';
-                    video.play();
-                })
-                .catch(function(err) {
-                    alert('Tidak dapat mengakses kamera: ' + err.message);
-                });
-        } else {
-            alert('Browser tidak mendukung akses kamera.');
-        }
-    });
-
-    // Ambil foto dari video dan kompres ke JPG, tanpa mengubah resolusi asli
-    captureBtn.addEventListener('click', function() {
-        // Gunakan ukuran asli canvas (sesuai video)
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        const tempCtx = tempCanvas.getContext('2d');
-        // Flip horizontal agar tidak mirror
-        tempCtx.translate(canvas.width, 0);
-        tempCtx.scale(-1, 1);
-        tempCtx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        // Kembalikan transform
-        tempCtx.setTransform(1, 0, 0, 1, 0, 0);
-
-        // Kompres ke JPEG kualitas menengah (0.6-0.8)
-        let quality = 0.7;
-        let dataUrl = tempCanvas.toDataURL('image/jpeg', quality);
-
-        // Cek ukuran, jika >150kb turunkan quality, jika <50kb naikkan quality (maks 0.9, min 0.4)
-        function getSizeInKB(base64) {
-            let head = 'data:image/jpeg;base64,';
-            return Math.round((base64.length - head.length) * 3/4 / 1024);
-        }
-        let size = getSizeInKB(dataUrl);
-        while ((size > 150 || size < 50) && (quality > 0.4 && quality < 0.9)) {
-            if (size > 150) quality -= 0.05;
-            else if (size < 50) quality += 0.05;
-            dataUrl = tempCanvas.toDataURL('image/jpeg', quality);
-            size = getSizeInKB(dataUrl);
-        }
-
-        photoResult.src = dataUrl;
-        photoPreview.classList.remove('d-none');
-        fotoWajahHidden.value = dataUrl;
-        // Matikan kamera setelah ambil foto
-        if (cameraStream) {
-            cameraStream.getTracks().forEach(track => track.stop());
-            video.style.display = 'none';
-            captureBtn.style.display = 'none';
-            closeCameraBtn.style.display = 'none';
-            startCameraBtn.style.display = 'inline-block';
-        }
-    });
-
-    // Tutup kamera tanpa ambil foto
-    closeCameraBtn.addEventListener('click', function() {
-        if (cameraStream) {
-            cameraStream.getTracks().forEach(track => track.stop());
-            cameraStream = null;
-        }
-        video.style.display = 'none';
-        captureBtn.style.display = 'none';
-        closeCameraBtn.style.display = 'none';
-        startCameraBtn.style.display = 'inline-block';
-    });
-
-    // Hapus foto dan reset ke awal
-    document.getElementById('deletePhotoBtn').addEventListener('click', function() {
-        photoResult.src = '#';
-        photoPreview.classList.add('d-none');
-        fotoWajahHidden.value = '';
-        // Tampilkan tombol kamera lagi
-        startCameraBtn.style.display = 'inline-block';
+        disableMobile: true
     });
     </script>
 @endsection

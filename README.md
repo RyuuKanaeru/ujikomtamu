@@ -63,130 +63,75 @@ Dengan antarmuka yang user-friendly dan sistem berbasis web, aplikasi ini mening
 
 ### Diagram Entity-Relationship
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│                          BUKU_TAMUS (Data Tamu)                           │
-│                          ──────────────────────                            │
-│                                                                             │
-│                     ┌──────────────────────────────┐                       │
-│                     │ PK │ id                      │                       │
-│                     ├──────────────────────────────┤                       │
-│                     │    │ nama                    │                       │
-│                     │    │ alamat                  │                       │
-│                     │    │ no_telepon (nullable)   │                       │
-│                     │    │ keperluan               │                       │
-│                     │    │ waktu_datang            │                       │
-│                     │    │ foto_wajah (nullable)   │                       │
-│                     │    │ status (pending/accept) │                       │
-│                     │    │ created_at              │                       │
-│                     │    │ updated_at              │                       │
-│                     └──────────────────────────────┘                       │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+erDiagram
+    ADMINS ||--o{ SESSIONS : "maintain"
+    BUKU_TAMUS ||--|| USERS : "reference (optional)"
 
+    ADMINS {
+        int id PK
+        string name
+        string email UK "unique"
+        string password
+        timestamp created_at
+        timestamp updated_at
+    }
 
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│                         ADMINS (Admin User)                                │
-│                         ──────────────────                                 │
-│                                                                             │
-│                     ┌──────────────────────────────┐                       │
-│                     │ PK │ id                      │                       │
-│                     ├──────────────────────────────┤                       │
-│                     │    │ name                    │                       │
-│                     │    │ email (unique)          │                       │
-│                     │    │ password                │                       │
-│                     │    │ created_at              │                       │
-│                     │    │ updated_at              │                       │
-│                     └──────────────────────────────┘                       │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+    BUKU_TAMUS {
+        int id PK
+        string nama
+        string alamat
+        string no_telepon "nullable"
+        text keperluan
+        timestamp waktu_datang "default: now()"
+        string foto_wajah "nullable (path to storage)"
+        string status "default: pending | accept | reject"
+        timestamp created_at
+        timestamp updated_at
+    }
 
+    USERS {
+        int id PK
+        string name
+        string email UK "unique"
+        timestamp email_verified_at "nullable"
+        string password
+        string remember_token "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
 
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│                    USERS (User Bawaan Laravel)                             │
-│                    ──────────────────────────                              │
-│                                                                             │
-│                     ┌──────────────────────────────┐                       │
-│                     │ PK │ id                      │                       │
-│                     ├──────────────────────────────┤                       │
-│                     │    │ name                    │                       │
-│                     │    │ email (unique)          │                       │
-│                     │    │ password                │                       │
-│                     │    │ remember_token          │                       │
-│                     │    │ email_verified_at       │                       │
-│                     │    │ created_at              │                       │
-│                     │    │ updated_at              │                       │
-│                     └──────────────────────────────┘                       │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│               SESSIONS (Session Management Laravel)                        │
-│               ──────────────────────────────────                           │
-│                                                                             │
-│                     ┌──────────────────────────────┐                       │
-│                     │ PK │ id                      │                       │
-│                     ├──────────────────────────────┤                       │
-│                     │ FK │ user_id (nullable)      │───────────┐           │
-│                     │    │ ip_address              │           │           │
-│                     │    │ user_agent              │           │           │
-│                     │    │ payload                 │           │           │
-│                     │    │ last_activity           │           │           │
-│                     └──────────────────────────────┘           │           │
-│                                                                │           │
-│                                                              [1:N]        │
-│                                                                │           │
-│                                      ┌──────────────────────────┘           │
-│                                      │                                     │
-│                                      │ References to USERS                 │
-│                                      ▼                                     │
-│                                   (USERS.id)                              │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+    SESSIONS {
+        string id PK
+        int user_id FK "nullable"
+        string ip_address
+        text user_agent
+        text payload
+        int last_activity
+    }
 ```
 
-### Penjelasan Tabel & Relasi:
-
-**BUKU_TAMUS** - Menyimpan data tamu yang berkunjung
-- `id` (PK): Primary key - ID unik untuk setiap tamu
-- `nama`: Nama lengkap tamu
-- `alamat`: Alamat tamu
-- `no_telepon`: Nomor telepon tamu (opsional)
-- `keperluan`: Alasan/tujuan kunjungan
-- `waktu_datang`: Timestamp otomatis saat tamu submit form
-- `foto_wajah`: Path ke file foto wajah (disimpan di storage, opsional)
-- `status`: Status tamu (`pending` = belum diproses, `accept` = diterima, `reject` = ditolak)
-- `created_at` / `updated_at`: Timestamp Laravel
+### Penjelasan Tabel:
 
 **ADMINS** - Menyimpan data admin yang bisa login
-- `id` (PK): Primary key - ID unik admin
-- `name`: Nama lengkap admin
-- `email` (UK): Email unik untuk login
-- `password`: Password terenkripsi dengan bcrypt
-- `created_at` / `updated_at`: Timestamp Laravel
+- `id`: Primary key
+- `name`: Nama admin
+- `email`: Email unik untuk login
+- `password`: Password terenkripsi (bcrypt)
+
+**BUKU_TAMUS** - Menyimpan data tamu yang berkunjung
+- `id`: Primary key
+- `nama`: Nama lengkap tamu
+- `alamat`: Alamat tamu
+- `no_telepon`: Nomor telepon (opsional)
+- `keperluan`: Alasan/tujuan kunjungan
+- `waktu_datang`: Timestamp otomatis saat submit
+- `foto_wajah`: Path ke file foto (disimpan di storage)
+- `status`: Status tamu (`pending` = belum diproses, `accept` = diterima, `reject` = ditolak)
 
 **USERS** - Tabel user bawaan Laravel (opsional, untuk future use)
-- `id` (PK): Primary key - ID unik user
-- `name`: Nama user
-- `email` (UK): Email unik
-- `password`: Password terenkripsi
-- `remember_token`: Token untuk remember me functionality
-- `email_verified_at`: Status verifikasi email
-- `created_at` / `updated_at`: Timestamp Laravel
 
 **SESSIONS** - Tabel session management Laravel
-- `id` (PK): Primary key - Session ID unik
-- `user_id` (FK): Foreign key yang mereferensi USERS.id (opsional, nullable)
-- `ip_address`: IP address client
-- `user_agent`: User agent browser
-- `payload`: Data session terenkripsi
-- `last_activity`: Waktu aktivitas terakhir
-- **Relasi**: 1 USER dapat memiliki banyak SESSIONS (1:N relationship)
 
 ---
 
