@@ -8,7 +8,9 @@ Aplikasi **Buku Tamu Digital** berbasis Laravel 12 untuk mencatat kedatangan tam
 - [Tentang Aplikasi](#tentang-aplikasi)
 - [Fitur Utama](#fitur-utama)
 - [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+- [Use Case Diagram](#use-case-diagram)
 - [Database Schema (ERD)](#database-schema-erd)
+- [UML Class Diagram](#uml-class-diagram)
 - [Cara Instalasi](#cara-instalasi)
 - [Troubleshooting](#troubleshooting)
 
@@ -33,29 +35,98 @@ Dengan antarmuka yang user-friendly dan sistem berbasis web, aplikasi ini mening
 - ✅ Penyimpanan otomatis waktu kunjungan
 - ✅ Validasi data input
 - ✅ Konfirmasi sukses setelah submit
-```
 
-## UML Class Diagram (tabel)
+### 🔐 Dashboard Admin
+- ✅ Login admin dengan email dan password
+- ✅ Melihat daftar tamu yang masuk (pending)
+- ✅ Menyetujui/menolak/pending tamu dengan notifikasi email
+- ✅ Melihat tamu yang sudah diterima dan ditolak
+- ✅ Export data tamu ke PDF per bulan
+- ✅ Menghapus data tamu yang sudah lama (>1 tahun)
+- ✅ Dashboard statistik: Total tamu, tamu hari ini, tamu per bulan
 
-Berikut adalah representasi class diagram dalam bentuk tabel untuk model yang diminta.
+---
 
-| Class | Atribut |
-|-------|---------|
-| **User** | `id` (int), `nama` (string), `email` (string), `password` (string) |
-| **Admin** | `id` (int), `nama` (string), `email` (string) |
-| **Report** | `id` (int), `user_id` (int), `isi_laporan` (text), `status` (string), `tanggal` (datetime) |
+## 🛠 Teknologi yang Digunakan
 
-### Relasi
-- `User` 1..* `Report` (satu User dapat memiliki banyak Report)
-- `Admin` mengelola `Report` (Admin memiliki hak mengelola/meninjau laporan)
+| Teknologi | Versi | Fungsi |
+|-----------|-------|--------|
+| **Laravel** | 12.x | Framework backend web |
+| **PHP** | 8.2+ | Bahasa pemrograman server-side |
+| **MySQL/MariaDB** | 5.7+ | Database relasional |
+| **Tailwind CSS** | 4.x | Styling frontend |
+| **Vite** | - | Build tool & module bundler |
+| **Composer** | - | Package manager PHP |
+| **dompdf** | - | PDF generation library |
+| **PHPUnit** | 11.x | Unit testing framework |
 
-## Use Case Diagram (gambar)
+---
 
-Masukkan gambar use case diagram Anda (file gambar) ke path `public/use_case_diagram.png` lalu gambar tersebut akan ditampilkan di README di bawah ini.
+## 📊 Use Case Diagram
 
 ![Use Case Diagram](public/use_case_diagram.png)
 
-_Catatan:_ jika Anda mengirim file gambar sekarang, saya dapat menambahkannya ke `public/` dan commit perubahan otomatis.
+### Keterangan Use Case Diagram:
+
+**Aktor Utama:**
+1. **Pengunjung (Tamu)** - User yang berkunjung ke PTUN Bandung
+2. **Admin** - Pengelola sistem (staff PTUN)
+
+**Use Cases:**
+
+| No. | Use Case | Aktor | Deskripsi |
+|-----|----------|-------|-----------|
+| 1 | Login | Admin | Admin melakukan login dengan email dan password |
+| 2 | Mengisi Data Form Tamu | Tamu | Tamu mengisi formulir data diri (nama, alamat, telepon, keperluan) |
+| 3 | Mengambil Foto Wajah | Tamu | Tamu mengambil foto wajah menggunakan kamera/webcam |
+| 4 | Submit Data Tamu | Tamu | Tamu mengirimkan data dan foto ke sistem |
+| 5 | Melihat Daftar Tamu Pending | Admin | Admin melihat tamu yang baru masuk dan belum diproses |
+| 6 | Menyetujui Tamu | Admin | Admin menyetujui kedatangan tamu (status: accept) |
+| 7 | Menolak Tamu | Admin | Admin menolak permintaan tamu (status: reject) |
+| 8 | Pending Tamu | Admin | Admin menandai tamu sebagai sedang diproses (status: pending) |
+| 9 | Mengirim Notifikasi Email | Sistem | Sistem mengirim email pemberitahuan ke tamu setelah status diubah |
+| 10 | Export Data ke PDF | Admin | Admin mengexport laporan tamu per bulan ke file PDF |
+| 11 | Mengelola Tamu Lama | Admin | Admin menghapus data tamu yang sudah lebih dari 1 tahun |
+
+---
+
+## 📈 Database Schema (ERD)
+
+```mermaid
+erDiagram
+    ADMINS ||--o{ SESSIONS : manages
+    USERS ||--o{ SESSIONS : "has"
+    BUKU_TAMUS ||--o{ TAMU_ARCHIVES : "archived_to"
+
+    ADMINS {
+        bigint id PK
+        string name
+        string email "unique"
+        string password
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BUKU_TAMUS {
+        bigint id PK
+        string nama
+        string alamat
+        string no_telepon "nullable"
+        string keperluan
+        datetime waktu_datang
+        string foto_wajah "nullable"
+        string email "nullable"
+        string status "nullable" 
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    USERS {
+        bigint id PK
+        string name
+        string email "unique"
+        timestamp email_verified_at "nullable"
+        string password
         string remember_token "nullable"
         timestamp created_at
         timestamp updated_at
@@ -68,6 +139,22 @@ _Catatan:_ jika Anda mengirim file gambar sekarang, saya dapat menambahkannya ke
         text user_agent
         text payload
         int last_activity
+    }
+
+    TAMU_ARCHIVES {
+        bigint id PK
+        bigint buku_tamu_id FK
+        string nama
+        string alamat
+        string no_telepon "nullable"
+        string keperluan
+        datetime waktu_datang
+        string foto_wajah "nullable"
+        string email "nullable"
+        string status
+        timestamp archived_at
+        timestamp created_at
+        timestamp updated_at
     }
 ```
 
@@ -92,6 +179,160 @@ _Catatan:_ jika Anda mengirim file gambar sekarang, saya dapat menambahkannya ke
 **USERS** - Tabel user bawaan Laravel (opsional, untuk future use)
 
 **SESSIONS** - Tabel session management Laravel
+
+**TAMU_ARCHIVES** - Archiving tamu yang lebih dari 1 tahun
+- `id`: Primary key
+- `buku_tamu_id`: Foreign key ke BUKU_TAMUS
+- Semua field sama seperti BUKU_TAMUS untuk keperluan archiving
+- `archived_at`: Timestamp saat archiving
+
+---
+
+## 🏗 UML Class Diagram
+
+```mermaid
+classDiagram
+    class BukuTamu {
+        -int id
+        -string nama
+        -string alamat
+        -string no_telepon
+        -string keperluan
+        -datetime waktu_datang
+        -string foto_wajah
+        -string email
+        -string status
+        -datetime created_at
+        -datetime updated_at
+        +getEmailForNotification() string
+    }
+
+    class Admin {
+        -int id
+        -string name
+        -string email
+        -string password
+        -datetime created_at
+        -datetime updated_at
+        -array hidden
+        -string guard
+    }
+
+    class User {
+        -int id
+        -string name
+        -string email
+        -datetime email_verified_at
+        -string password
+        -string remember_token
+        -datetime created_at
+        -datetime updated_at
+        -array fillable
+        -array hidden
+        +casts() array
+    }
+
+    class AdminAuthController {
+        -Admin admin
+        -BukuTamu bukuTamu
+        +showLoginForm() View
+        +login(Request) RedirectResponse
+        +logout() RedirectResponse
+        +dashboard() View
+        +tamuLama() View
+        +resetTamuLama() RedirectResponse
+        +accept(int) RedirectResponse
+        +reject(int) RedirectResponse
+        +pending(int) RedirectResponse
+    }
+
+    class HomeController {
+        -BukuTamu bukuTamu
+        +statistik(Request) View
+        +acceptPage() View
+        +pendingPage() View
+        +rejectPage() View
+        +store(Request) RedirectResponse
+        +destroy(int) RedirectResponse
+        +accept(int) RedirectResponse
+        +pending(int) RedirectResponse
+        +reject(int) RedirectResponse
+    }
+
+    class ExportController {
+        -BukuTamu bukuTamu
+        -PDF pdf
+        +exportBukuTamuPerBulan(Request) Stream
+    }
+
+    class TamuAcceptNotification {
+        -BukuTamu bukuTamu
+        +envelope() Envelope
+        +content() Content
+    }
+
+    class TamuPendingNotification {
+        -BukuTamu bukuTamu
+        +envelope() Envelope
+        +content() Content
+    }
+
+    class TamuRejectNotification {
+        -BukuTamu bukuTamu
+        +envelope() Envelope
+        +content() Content
+    }
+
+    class TamuArchive {
+        -int id
+        -int buku_tamu_id
+        -string nama
+        -string alamat
+        -string no_telepon
+        -string keperluan
+        -datetime waktu_datang
+        -string foto_wajah
+        -string email
+        -string status
+        -datetime archived_at
+        -datetime created_at
+        -datetime updated_at
+    }
+
+    %% Relationships
+    AdminAuthController --> Admin : authenticates
+    AdminAuthController --> BukuTamu : manages
+    HomeController --> BukuTamu : manages
+    ExportController --> BukuTamu : exports
+    TamuAcceptNotification --> BukuTamu : notifies
+    TamuPendingNotification --> BukuTamu : notifies
+    TamuRejectNotification --> BukuTamu : notifies
+    BukuTamu --> TamuArchive : archives_to
+    Admin --|> User : inherits_auth
+```
+
+### Penjelasan Class Diagram:
+
+**Model Classes:**
+- **BukuTamu**: Model untuk data tamu yang berkunjung dengan method `getEmailForNotification()` untuk notifikasi
+- **Admin**: Model untuk admin system dengan guard authentication khusus
+- **User**: Model user bawaan Laravel (optional)
+- **TamuArchive**: Model untuk archiving data tamu lama
+
+**Controller Classes:**
+- **AdminAuthController**: Handle login/logout admin dan approval tamu dengan notifikasi email
+- **HomeController**: Handle CRUD tamu dan filtering by status
+- **ExportController**: Handle export data tamu ke PDF
+
+**Notification Classes:**
+- **TamuAcceptNotification**: Email notifikasi saat tamu diterima
+- **TamuPendingNotification**: Email notifikasi saat tamu pending
+- **TamuRejectNotification**: Email notifikasi saat tamu ditolak
+
+**Relationships:**
+- Controllers memanage dan mengotentikasi Models
+- Notifications mengirim notifikasi untuk BukuTamu
+- BukuTamu dapat di-archive ke TamuArchive
 
 ---
 
