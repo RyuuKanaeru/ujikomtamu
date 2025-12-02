@@ -1,10 +1,10 @@
-# 📘 Aplikasi Buku Tamu Digital - Laravel 12
+﻿# ðŸ“˜ Aplikasi Buku Tamu Digital - Laravel 12
 
 Aplikasi **Buku Tamu Digital** berbasis Laravel 12 untuk mencatat kedatangan tamu secara efisien, praktis, dan modern di **Pengadilan Tata Usaha Negara (PTUN) Bandung**. Dilengkapi dengan fitur login admin untuk memantau, mengelola data kunjungan, dan export data ke PDF.
 
 ---
 
-## 📋 Daftar Isi
+## ðŸ“‹ Daftar Isi
 - [Tentang Aplikasi](#tentang-aplikasi)
 - [Fitur Utama](#fitur-utama)
 - [Teknologi yang Digunakan](#teknologi-yang-digunakan)
@@ -25,26 +25,26 @@ Dengan antarmuka yang user-friendly dan sistem berbasis web, aplikasi ini mening
 
 ---
 
-## ✨ Fitur Utama
+## âœ¨ Fitur Utama
 
-### 👥 Halaman Tamu (Public)
-- ✅ Formulir pengisian data tamu: Nama, Alamat, Nomor Telepon, Keperluan
-- ✅ Upload foto wajah (JPEG/PNG)
-- ✅ Penyimpanan otomatis waktu kunjungan
-- ✅ Validasi data input
-- ✅ Konfirmasi sukses setelah submit
+### ðŸ‘¥ Halaman Tamu (Public)
+- âœ… Formulir pengisian data tamu: Nama, Alamat, Nomor Telepon, Keperluan
+- âœ… Upload foto wajah (JPEG/PNG)
+- âœ… Penyimpanan otomatis waktu kunjungan
+- âœ… Validasi data input
+- âœ… Konfirmasi sukses setelah submit
 
-### 🛡️ Panel Admin (Authorized)
-- ✅ Sistem login aman dengan sesi admin
-- ✅ Dashboard untuk melihat daftar lengkap tamu
-- ✅ Filter data tamu berdasarkan bulan/tahun
-- ✅ Aksi status tamu: **Terima**, **Tolak**, atau **Pending**
-- ✅ **Export PDF** - Laporan bulanan dalam format landscape A4
-- ✅ Manajemen akun admin
+### ðŸ›¡ï¸ Panel Admin (Authorized)
+- âœ… Sistem login aman dengan sesi admin
+- âœ… Dashboard untuk melihat daftar lengkap tamu
+- âœ… Filter data tamu berdasarkan bulan/tahun
+- âœ… Aksi status tamu: **Terima**, **Tolak**, atau **Pending**
+- âœ… **Export PDF** - Laporan bulanan dalam format landscape A4
+- âœ… Manajemen akun admin
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## ðŸ› ï¸ Teknologi yang Digunakan
 
 | Teknologi | Versi | Fungsi |
 |-----------|-------|--------|
@@ -135,7 +135,7 @@ erDiagram
 
 ---
 
-## ⚙️ Cara Instalasi Step-by-Step
+## âš™ï¸ Cara Instalasi Step-by-Step
 
 ### Prerequisites
 - **PHP 8.2+** dengan extension: `gd`, `mbstring`, `pdo_mysql`, `openssl`
@@ -156,7 +156,7 @@ cd ujikomtamu
 composer install
 ```
 
-> ⏳ Proses ini akan mendownload semua package Laravel dan dependencies lainnya (~3-5 menit tergantung koneksi)
+> â³ Proses ini akan mendownload semua package Laravel dan dependencies lainnya (~3-5 menit tergantung koneksi)
 
 ### Langkah 3: Setup Environment Configuration
 
@@ -232,7 +232,7 @@ php artisan db:seed --class=AdminSeeder
 - Email: `admin@ptun.com`
 - Password: `password`
 
-> ⚠️ **PENTING**: Ganti password admin setelah login pertama!
+> âš ï¸ **PENTING**: Ganti password admin setelah login pertama!
 
 ### Langkah 8: Install Dependencies Frontend (Optional)
 
@@ -256,7 +256,7 @@ php artisan serve
   Press Ctrl+C to stop the server
 ```
 
-### ✅ Aplikasi Siap Diakses
+### âœ… Aplikasi Siap Diakses
 
 Buka browser dan kunjungi:
 
@@ -269,7 +269,7 @@ Buka browser dan kunjungi:
 
 ---
 
-## 📤 Fitur Export PDF
+## ðŸ“¤ Fitur Export PDF
 
 Aplikasi dilengkapi fitur export data tamu ke PDF dengan format landscape A4 untuk laporan bulanan.
 
@@ -282,12 +282,12 @@ Aplikasi dilengkapi fitur export data tamu ke PDF dengan format landscape A4 unt
 
 ### Fitur Export PDF:
 
-✅ Layout landscape untuk tabel yang lebar  
-✅ Semua kolom data terlihat lengkap tanpa terpotong  
-✅ Foto tamu ditampilkan dalam PDF  
-✅ Status tamu ditampilkan dengan badge warna  
-✅ Header PTUN Bandung dan informasi resmi  
-✅ Footer dengan tanggal laporan  
+âœ… Layout landscape untuk tabel yang lebar  
+âœ… Semua kolom data terlihat lengkap tanpa terpotong  
+âœ… Foto tamu ditampilkan dalam PDF  
+âœ… Status tamu ditampilkan dengan badge warna  
+âœ… Header PTUN Bandung dan informasi resmi  
+âœ… Footer dengan tanggal laporan  
 
 ### Requirement untuk Export PDF:
 
@@ -301,23 +301,23 @@ Server akan otomatis load PHP dengan GD extension yang sudah di-enable.
 
 ---
 
-## 🐛 Troubleshooting
+## ðŸ› Troubleshooting
 
-### ❌ Error: "Class 'PDO' not found"
+### âŒ Error: "Class 'PDO' not found"
 
 **Penyebab:** PDO extension tidak aktif di PHP  
 **Solusi:**
 - Edit file `php.ini` (cari path-nya dengan `php --ini`)
-- Uncomment baris: `;extension=pdo_mysql` → `extension=pdo_mysql`
+- Uncomment baris: `;extension=pdo_mysql` â†’ `extension=pdo_mysql`
 - Restart PHP/Server
 
-### ❌ Error: "SQLSTATE[HY000] [2002] No such file or directory"
+### âŒ Error: "SQLSTATE[HY000] [2002] No such file or directory"
 
 **Penyebab:** MySQL tidak berjalan atau database belum terbuat  
 **Solusi:**
 ```bash
 # Start MySQL (XAMPP)
-# Buka XAMPP Control Panel → Start Apache & MySQL
+# Buka XAMPP Control Panel â†’ Start Apache & MySQL
 
 # Atau jalankan MySQL manual jika terinstall
 mysql -u root
@@ -328,7 +328,7 @@ php artisan tinker
 # Output: PDO Object (berarti berhasil)
 ```
 
-### ❌ Error: "The PHP GD extension is required, but is not installed"
+### âŒ Error: "The PHP GD extension is required, but is not installed"
 
 **Penyebab:** GD Extension tidak aktif saat export PDF  
 **Solusi:**
@@ -350,10 +350,10 @@ php --ini
 
 Verifikasi GD aktif:
 ```bash
-php -r "echo extension_loaded('gd') ? 'GD AKTIF ✓' : 'GD TIDAK AKTIF ✗';"
+php -r "echo extension_loaded('gd') ? 'GD AKTIF âœ“' : 'GD TIDAK AKTIF âœ—';"
 ```
 
-### ❌ Error: "SQLSTATE[HY000]: General error: 1030 Got error 28"
+### âŒ Error: "SQLSTATE[HY000]: General error: 1030 Got error 28"
 
 **Penyebab:** Disk penuh atau permission issue pada storage  
 **Solusi:**
@@ -366,12 +366,12 @@ php artisan cache:clear
 php artisan config:clear
 ```
 
-### ❌ Error: "Call to undefined function imagecreatefrompng()"
+### âŒ Error: "Call to undefined function imagecreatefrompng()"
 
 **Penyebab:** PHP GD extension tidak ter-load  
 **Solusi:** Sama dengan error GD di atas
 
-### ❌ Foto Tidak Muncul di PDF
+### âŒ Foto Tidak Muncul di PDF
 
 **Penyebab:** Storage symlink tidak terbuat atau path foto salah  
 **Solusi:**
@@ -390,62 +390,62 @@ php artisan tinker
 
 ---
 
-## 📂 Struktur Project
+## ðŸ“‚ Struktur Project
 
 ```
 ujikomtamu/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── TamuController.php       # Handle form tamu
-│   │   │   ├── AdminController.php      # Handle dashboard admin
-│   │   │   └── ExportController.php     # Handle export PDF
-│   │   ├── Middleware/
-│   │   │   └── AdminMiddleware.php      # Proteksi route admin
-│   │   └── Kernel.php
-│   ├── Models/
-│   │   ├── BukuTamu.php                 # Model tamu
-│   │   ├── Admin.php                    # Model admin
-│   │   └── User.php
-│   └── ...
-├── database/
-│   ├── migrations/
-│   │   ├── create_buku_tamus_table.php
-│   │   ├── create_admins_table.php
-│   │   └── ...
-│   └── seeders/
-│       ├── AdminSeeder.php              # Seeder untuk admin
-│       └── ...
-├── resources/
-│   ├── views/
-│   │   ├── admin/
-│   │   │   ├── login.blade.php          # Form login admin
-│   │   │   ├── dashboard.blade.php      # Dashboard admin
-│   │   │   └── pdf_buku_tamu.blade.php  # Template PDF
-│   │   ├── home/
-│   │   │   └── form.blade.php           # Form pengisian tamu
-│   │   └── ...
-│   ├── css/ & js/
-│   └── ...
-├── routes/
-│   └── web.php                          # Semua route aplikasi
-├── public/
-│   ├── storage/                         # Folder foto (symlink)
-│   └── index.php
-├── storage/
-│   ├── app/
-│   │   └── public/
-│   │       └── [foto-tamu]              # Penyimpanan foto
-│   └── logs/
-├── .env                                 # Konfigurasi environment
-├── artisan                              # Laravel CLI
-├── composer.json                        # PHP dependencies
-└── README.md                            # File ini
+â”œâ”€â”€ app/
+â”‚   â”œâ”€â”€ Http/
+â”‚   â”‚   â”œâ”€â”€ Controllers/
+â”‚   â”‚   â”‚   â”œâ”€â”€ TamuController.php       # Handle form tamu
+â”‚   â”‚   â”‚   â”œâ”€â”€ AdminController.php      # Handle dashboard admin
+â”‚   â”‚   â”‚   â””â”€â”€ ExportController.php     # Handle export PDF
+â”‚   â”‚   â”œâ”€â”€ Middleware/
+â”‚   â”‚   â”‚   â””â”€â”€ AdminMiddleware.php      # Proteksi route admin
+â”‚   â”‚   â””â”€â”€ Kernel.php
+â”‚   â”œâ”€â”€ Models/
+â”‚   â”‚   â”œâ”€â”€ BukuTamu.php                 # Model tamu
+â”‚   â”‚   â”œâ”€â”€ Admin.php                    # Model admin
+â”‚   â”‚   â””â”€â”€ User.php
+â”‚   â””â”€â”€ ...
+â”œâ”€â”€ database/
+â”‚   â”œâ”€â”€ migrations/
+â”‚   â”‚   â”œâ”€â”€ create_buku_tamus_table.php
+â”‚   â”‚   â”œâ”€â”€ create_admins_table.php
+â”‚   â”‚   â””â”€â”€ ...
+â”‚   â””â”€â”€ seeders/
+â”‚       â”œâ”€â”€ AdminSeeder.php              # Seeder untuk admin
+â”‚       â””â”€â”€ ...
+â”œâ”€â”€ resources/
+â”‚   â”œâ”€â”€ views/
+â”‚   â”‚   â”œâ”€â”€ admin/
+â”‚   â”‚   â”‚   â”œâ”€â”€ login.blade.php          # Form login admin
+â”‚   â”‚   â”‚   â”œâ”€â”€ dashboard.blade.php      # Dashboard admin
+â”‚   â”‚   â”‚   â””â”€â”€ pdf_buku_tamu.blade.php  # Template PDF
+â”‚   â”‚   â”œâ”€â”€ home/
+â”‚   â”‚   â”‚   â””â”€â”€ form.blade.php           # Form pengisian tamu
+â”‚   â”‚   â””â”€â”€ ...
+â”‚   â”œâ”€â”€ css/ & js/
+â”‚   â””â”€â”€ ...
+â”œâ”€â”€ routes/
+â”‚   â””â”€â”€ web.php                          # Semua route aplikasi
+â”œâ”€â”€ public/
+â”‚   â”œâ”€â”€ storage/                         # Folder foto (symlink)
+â”‚   â””â”€â”€ index.php
+â”œâ”€â”€ storage/
+â”‚   â”œâ”€â”€ app/
+â”‚   â”‚   â””â”€â”€ public/
+â”‚   â”‚       â””â”€â”€ [foto-tamu]              # Penyimpanan foto
+â”‚   â””â”€â”€ logs/
+â”œâ”€â”€ .env                                 # Konfigurasi environment
+â”œâ”€â”€ artisan                              # Laravel CLI
+â”œâ”€â”€ composer.json                        # PHP dependencies
+â””â”€â”€ README.md                            # File ini
 ```
 
 ---
 
-## 🚀 Deployment Production
+## ðŸš€ Deployment Production
 
 Jika ingin deploy ke production (server live), baca dokumentasi resmi Laravel 12:
 - https://laravel.com/docs/12.x/deployment
@@ -459,19 +459,19 @@ Jika ingin deploy ke production (server live), baca dokumentasi resmi Laravel 12
 
 ---
 
-## 📝 License
+## ðŸ“ License
 
 Project ini dibuat untuk keperluan akademis dan penggunaan di PTUN Bandung.
 
 ---
 
-## 👤 Author
+## ðŸ‘¤ Author
 
 **RyuuKanaeru** - GitHub: [@RyuuKanaeru](https://github.com/RyuuKanaeru)
 
 ---
 
-## 📞 Support & Issues
+## ðŸ“ž Support & Issues
 
 Jika menemukan bug atau masalah, silakan:
 1. Buat **GitHub Issue** di repository ini
@@ -484,3 +484,59 @@ Jika menemukan bug atau masalah, silakan:
 **Version:** 1.0.0
 
 
+
+
+---
+
+## Use Case Diagram (UML)
+
+Berikut adalah diagram Use Case (UML) untuk alur utama aplikasi `Buku Tamu Digital`. Bagian ini menyertakan deskripsi aktor, daftar use case utama, dan snippet PlantUML yang bisa Anda render secara lokal atau via PlantUML server.
+
+### Aktor
+- **Admin**: Mengelola data tamu, menyetujui/menolak entri, dan mengekspor laporan.
+- **Tamu**: Mengisi formulir tamu dan melihat status pengajuan.
+- **System**: Menyimpan data dan menghasilkan PDF.
+
+### Use Case Utama
+- Submit Guest Entry (Tamu)
+- View Submission Status (Tamu)
+- Admin Login (Admin)
+- Manage Guest Entries (Admin)
+- Approve / Reject Entry (Admin)
+- Export PDF Report (Admin)
+
+### PlantUML (renderable)
+Salin blok berikut ke file `.puml` atau langsung ke extension PlantUML di VS Code, lalu render:
+
+```plantuml
+@startuml
+left to right direction
+actor Admin
+actor Tamu as "Visitor"
+actor System
+
+rectangle "Aplikasi Buku Tamu" {
+  Admin --> (Login)
+  Admin --> (View Dashboard)
+  Admin --> (Manage Guest Entries)
+  Admin --> (Approve/Reject Entry)
+  Admin --> (Export PDF Report)
+
+  Tamu --> (Open Guest Form)
+  Tamu --> (Submit Guest Entry)
+  Tamu --> (View Submission Status)
+}
+
+System --> (Store Entry)
+System --> (Generate PDF)
+
+@enduml
+```
+
+### Cara Render
+- **VS Code**: Install extension `PlantUML` (jebbs.plantuml), buka file `.puml` dan pilih preview.
+- **Online**: Gunakan PlantUML server di `https://www.plantuml.com/plantuml` — Anda dapat meng-encode teks PlantUML dan membuka output PNG/SVG.
+- **CLI**: Install PlantUML dan jalankan `plantuml diagram.puml` untuk menghasilkan gambar.
+
+Jika Anda ingin, saya bisa juga menghasilkan gambar PNG dari diagram ini dan menambahkannya ke `public/` atau `docs/`.
+````
