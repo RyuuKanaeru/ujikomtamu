@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <style>
+    .cls { fill: #fff; stroke: #333; stroke-width: 2; }
+    .title { font: bold 14px sans-serif; }
+    .attr { font: 12px monospace; }
+    .line { stroke: #333; stroke-width: 2; marker-end: url(#arrow); }
+  </style>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 L3,5 z" fill="#333" />
+    </marker>
+  </defs>
+
+  <!-- BukuTamu -->
+  <g transform="translate(50,50)">
+    <rect class="cls" x="0" y="0" width="300" height="200" rx="4" ry="4" />
+    <text class="title" x="12" y="22">BukuTamu</text>
+    <text class="attr" x="12" y="46">+ id : int</text>
+    <text class="attr" x="12" y="66">+ nama : string</text>
+    <text class="attr" x="12" y="86">+ alamat : string</text>
+    <text class="attr" x="12" y="106">+ no_telepon : string?</text>
+    <text class="attr" x="12" y="126">+ keperluan : text</text>
+    <text class="attr" x="12" y="146">+ waktu_datang : datetime</text>
+    <text class="attr" x="12" y="166">+ foto_wajah : string?</text>
+  </g>
+
+  <!-- Admin -->
+  <g transform="translate(450,40)">
+    <rect class="cls" x="0" y="0" width="220" height="120" rx="4" ry="4" />
+    <text class="title" x="12" y="22">Admin</text>
+    <text class="attr" x="12" y="46">+ id : int</text>
+    <text class="attr" x="12" y="66">+ name : string</text>
+    <text class="attr" x="12" y="86">+ email : string</text>
+  </g>
+
+  <!-- User -->
+  <g transform="translate(450,200)">
+    <rect class="cls" x="0" y="0" width="220" height="140" rx="4" ry="4" />
+    <text class="title" x="12" y="22">User</text>
+    <text class="attr" x="12" y="46">+ id : int</text>
+    <text class="attr" x="12" y="66">+ name : string</text>
+    <text class="attr" x="12" y="86">+ email : string</text>
+    <text class="attr" x="12" y="106">+ remember_token : string?</text>
+  </g>
+
+  <!-- TamuArchive -->
+  <g transform="translate(50,280)">
+    <rect class="cls" x="0" y="0" width="300" height="100" rx="4" ry="4" />
+    <text class="title" x="12" y="22">TamuArchive</text>
+    <text class="attr" x="12" y="46">+ id : int</text>
+    <text class="attr" x="12" y="66">+ buku_tamu_id : int</text>
+  </g>
+
+  <!-- Report -->
+  <g transform="translate(450,380)">
+    <rect class="cls" x="0" y="0" width="220" height="100" rx="4" ry="4" />
+    <text class="title" x="12" y="22">Report</text>
+    <text class="attr" x="12" y="46">+ id : int</text>
+    <text class="attr" x="12" y="66">+ title : string</text>
+  </g>
+
+  <!-- Relations -->
+  <!-- BukuTamu -> Admin (processed_by) -->
+  <line class="line" x1="350" y1="90" x2="450" y2="60" />
+  <text x="365" y="78" font-size="12" fill="#333">processed_by</text>
+
+  <!-- BukuTamu -> User (created_by) -->
+  <line class="line" x1="350" y1="140" x2="450" y2="240" />
+  <text x="360" y="190" font-size="12" fill="#333">created_by</text>
+
+  <!-- BukuTamu -> TamuArchive (archived 1..*) -->
+  <line class="line" x1="150" y1="250" x2="150" y2="280" />
+  <line class="line" x1="150" y1="280" x2="150" y2="280" />
+  <line class="line" x1="150" y1="250" x2="150" y2="280" />
+  <line class="line" x1="150" y1="250" x2="150" y2="280" />
+  <line class="line" x1="150" y1="250" x2="150" y2="280" />
+  <line class="line" x1="150" y1="250" x2="150" y2="280" />
+  <line class="line" x1="200" y1="250" x2="200" y2="280" />
+  <line class="line" x1="200" y1="250" x2="200" y2="280" />
+  <line class="line" x1="200" y1="250" x2="200" y2="280" />
+  <line class="line" x1="200" y1="250" x2="200" y2="280" />
+  <line class="line" x1="200" y1="250" x2="170" y2="280" />
+  <text x="90" y="260" font-size="12" fill="#333">1..*</text>
+
+  <!-- Report -- BukuTamu summarizes (undirected) -->
+  <line class="line" x1="500" y1="430" x2="250" y2="200" marker-end="url(#arrow)" />
+  <text x="360" y="330" font-size="12" fill="#333">summarizes</text>
+
+</svg>
