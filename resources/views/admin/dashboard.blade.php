@@ -28,6 +28,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
+                            <th>Email</th>
                             <th>Alamat</th>
                             <th>No. Telepon</th>
                             <th>Keperluan</th>
@@ -41,6 +42,7 @@
                         <tr>
                             <td data-label="No">{{ $loop->iteration }}</td>
                             <td data-label="Nama">{{ $tamu->nama }}</td>
+                            <td data-label="Email">{{ $tamu->email ?? '-' }}</td>
                             <td data-label="Alamat">{{ $tamu->alamat }}</td>
                             <td data-label="No. Telepon">{{ $tamu->no_telepon ?? '-' }}</td>
                             <td data-label="Keperluan">{{ $tamu->keperluan }}</td>
@@ -59,30 +61,28 @@
                             <td data-label="Aksi">
                                 <div class="d-flex flex-wrap gap-1">
                                     <!-- Accept -->
-                                    <form action="{{ route('tamu.accept', $tamu->id) }}" method="POST">
+                                    <form action="{{ route('admin.tamu.accept', $tamu->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Terima permintaan dari {{ $tamu->nama }}?')">
                                         @csrf
-                                        <button type="submit" class="action-icon" title="Accept">
+                                        <button type="submit" class="action-icon action-accept" title="Terima">
                                             <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
                                         </button>
                                     </form>
 
                                     <!-- Pending -->
-                                    @if(!isset($tamu->status) || $tamu->status === null || $tamu->status === 'pending')
-                                    <form action="{{ route('tamu.pending', $tamu->id) }}" method="POST">
+                                    <form action="{{ route('admin.tamu.pending', $tamu->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tandai sebagai sedang diproses?')">
                                         @csrf
-                                        <button type="submit" class="action-icon" title="Pending">
+                                        <button type="submit" class="action-icon action-pending" title="Sedang Diproses">
                                             <svg viewBox="0 0 24 24">
                                                 <circle cx="12" cy="12" r="10"/>
                                                 <path d="M12 6v6l4 2"/>
                                             </svg>
                                         </button>
                                     </form>
-                                    @endif
 
                                     <!-- Reject -->
-                                    <form action="{{ route('tamu.reject', $tamu->id) }}" method="POST">
+                                    <form action="{{ route('admin.tamu.reject', $tamu->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tolak permintaan dari {{ $tamu->nama }}?')">
                                         @csrf
-                                        <button type="submit" class="action-icon" title="Reject">
+                                        <button type="submit" class="action-icon action-reject" title="Tolak">
                                             <svg viewBox="0 0 24 24">
                                                 <line x1="6" y1="6" x2="18" y2="18"/>
                                                 <line x1="6" y1="18" x2="18" y2="6"/>
@@ -94,7 +94,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="8" class="text-center py-4">
+                            <td colspan="9" class="text-center py-4">
                                 <div class="text-muted">
                                     <i class="fas fa-inbox fa-2x mb-2"></i>
                                     <p class="mb-0">Belum ada tamu yang tercatat</p>
@@ -212,6 +212,60 @@
 .action-icon:hover svg {
     fill:#fff;
     stroke:#004d2f;
+}
+
+/* Accept Button - Green */
+.action-accept {
+    border-color:#28a745;
+}
+
+.action-accept svg {
+    stroke:#28a745;
+}
+
+.action-accept:hover {
+    background:#28a745;
+    border-color:#28a745;
+}
+
+.action-accept:hover svg {
+    stroke:#fff;
+}
+
+/* Pending Button - Blue */
+.action-pending {
+    border-color:#007bff;
+}
+
+.action-pending svg {
+    stroke:#007bff;
+}
+
+.action-pending:hover {
+    background:#007bff;
+    border-color:#007bff;
+}
+
+.action-pending:hover svg {
+    stroke:#fff;
+}
+
+/* Reject Button - Red */
+.action-reject {
+    border-color:#dc3545;
+}
+
+.action-reject svg {
+    stroke:#dc3545;
+}
+
+.action-reject:hover {
+    background:#dc3545;
+    border-color:#dc3545;
+}
+
+.action-reject:hover svg {
+    stroke:#fff;
 }
 
 /* RESPONSIVE */

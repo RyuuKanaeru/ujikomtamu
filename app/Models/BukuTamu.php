@@ -9,14 +9,23 @@ class BukuTamu extends Model
     protected $fillable = [
         'nama',
         'alamat',
+        'email',
         'no_telepon',
         'keperluan',
         'waktu_datang',
         'foto_wajah',
-        'status'
+        'status',
     ];
 
     protected $casts = [
         'waktu_datang' => 'datetime',
     ];
+
+    /**
+     * Get the email address of the tamu
+     */
+    public function getEmailForNotification(): string
+    {
+        return $this->email;
+    }
 }

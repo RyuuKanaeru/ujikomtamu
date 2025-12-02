@@ -182,6 +182,17 @@
                                         @enderror
                                     </div>
 
+                                    <!-- Email -->
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                            id="email" name="email" value="{{ old('email') }}" required
+                                            placeholder="Masukkan alamat email">
+                                        <label for="email">Email <span class="text-danger">*</span></label>
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
                                     <!-- Alamat -->
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control @error('alamat') is-invalid @enderror" 

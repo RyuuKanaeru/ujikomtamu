@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\BukuTamu;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -16,11 +16,12 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'alamat' => 'required|string|max:255',
             'no_telepon' => 'nullable|string|max:20',
             'keperluan' => 'required|string',
             'waktu_datang' => 'required|string',
-            'foto_wajah' => 'required|string'
+            'foto_wajah' => 'required|string',
         ]);
 
         // Proses foto wajah base64
@@ -34,8 +35,8 @@ class UserController extends Controller
                 if ($base64 === false) {
                     return back()->withErrors(['foto_wajah' => 'Gagal decode gambar.']);
                 }
-                $fileName = 'foto_' . uniqid() . '.' . $type;
-                $filePath = 'foto_tamu/' . $fileName;
+                $fileName = 'foto_'.uniqid().'.'.$type;
+                $filePath = 'foto_tamu/'.$fileName;
                 \Storage::disk('public')->put($filePath, $base64);
                 $fotoPath = $filePath;
             } else {

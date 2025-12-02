@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Controllers\ExportController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
 
     // Export PDF Buku Tamu per Bulan
-    Route::get('/buku-tamu/export-pdf', 
+    Route::get('/buku-tamu/export-pdf',
         [ExportController::class, 'exportBukuTamuPerBulan']
     )->name('admin.buku-tamu.export-pdf');
 
@@ -76,14 +76,28 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/accept', [HomeController::class, 'acceptPage'])->name('tamu.accept.page');
     Route::get('/pending', [HomeController::class, 'pendingPage'])->name('tamu.pending.page');
     Route::get('/reject', [HomeController::class, 'rejectPage'])->name('tamu.reject.page');
+
+    // Action routes for tamu status updates with email notifications
+    Route::post('/tamu/{id}/accept', [AdminAuthController::class, 'accept'])->name('admin.tamu.accept');
+    Route::post('/tamu/{id}/pending', [AdminAuthController::class, 'pending'])->name('admin.tamu.pending');
+    Route::post('/tamu/{id}/reject', [AdminAuthController::class, 'reject'])->name('admin.tamu.reject');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Aksi Status Tamu
+| Aksi Status Tamu (Legacy - Deprecated)
 |--------------------------------------------------------------------------
 */
 
-Route::post('/tamu/{id}/accept', [HomeController::class, 'accept'])->name('tamu.accept');
-Route::post('/tamu/{id}/pending', [HomeController::class, 'pending'])->name('tamu.pending');
-Route::post('/tamu/{id}/reject', [HomeController::class, 'reject'])->name('tamu.reject');
+// Legacy routes - redirect to new admin routes
+Route::post('/tamu/{id}/accept', function ($id) {
+    return redirect()->route('admin.tamu.accept', $id);
+})->name('tamu.accept');
+
+Route::post('/tamu/{id}/pending', function ($id) {
+    return redirect()->route('admin.tamu.pending', $id);
+})->name('tamu.pending');
+
+Route::post('/tamu/{id}/reject', function ($id) {
+    return redirect()->route('admin.tamu.reject', $id);
+})->name('tamu.reject');

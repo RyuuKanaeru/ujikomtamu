@@ -10,6 +10,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>Nama</th>
+                                <th>Email</th>
                                 <th>Alamat</th>
                                 <th>No. Telepon</th>
                                 <th>Keperluan</th>
@@ -22,6 +23,7 @@
                             @forelse($tamus as $tamu)
                                 <tr>
                                     <td>{{ $tamu->nama }}</td>
+                                    <td>{{ $tamu->email ?? '-' }}</td>
                                     <td>{{ $tamu->alamat ?? '-' }}</td>
                                     <td>{{ $tamu->no_telepon ?? '-' }}</td>
                                     <td>{{ $tamu->keperluan }}</td>
