@@ -484,3 +484,77 @@ Jika menemukan bug atau masalah, silakan:
 **Version:** 1.0.0
 
 
+
+
+---
+
+## UML Class Diagram
+
+Berikut adalah diagram kelas utama (UML) yang merepresentasikan model-model domain aplikasi: `BukuTamu`, `Admin`, `User`, `TamuArchive`, dan `Report`. Anda dapat menyalin blok PlantUML berikut ke file `.puml` dan merendernya.
+
+```plantuml
+@startuml
+skinparam classAttributeIconSize 0
+
+class BukuTamu {
+  +int id
+  +string nama
+  +string alamat
+  +string? no_telepon
+  +text keperluan
+  +datetime waktu_datang
+  +string? foto_wajah
+  +enum status
+  +datetime created_at
+  +datetime updated_at
+}
+
+class Admin {
+  +int id
+  +string name
+  +string email
+  +string password
+  +datetime created_at
+  +datetime updated_at
+}
+
+class User {
+  +int id
+  +string name
+  +string email
+  +datetime? email_verified_at
+  +string password
+  +string? remember_token
+  +datetime created_at
+  +datetime updated_at
+}
+
+class TamuArchive {
+  +int id
+  +int buku_tamu_id
+  +text archived_data
+  +datetime archived_at
+}
+
+class Report {
+  +int id
+  +string title
+  +text content
+  +datetime created_at
+}
+
+BukuTamu "1" o-- "0..*" TamuArchive : archived
+BukuTamu "*" --> "1" Admin : processed_by
+BukuTamu "*" --> "0..1" User : created_by
+Report "*" -- "*" BukuTamu : summarizes
+
+@enduml
+```
+
+### Cara Render
+- **VS Code**: gunakan extension `PlantUML` (jebbs.plantuml) lalu buka file `.puml`.
+- **Online**: gunakan `https://www.plantuml.com/plantuml`.
+- **CLI**: jalankan `plantuml diagram.puml`.
+
+(Informasi atribut mengikuti skema migrasi dan model pada repository.)
+`````
