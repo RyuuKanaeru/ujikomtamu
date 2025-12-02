@@ -33,69 +33,29 @@ Dengan antarmuka yang user-friendly dan sistem berbasis web, aplikasi ini mening
 - ✅ Penyimpanan otomatis waktu kunjungan
 - ✅ Validasi data input
 - ✅ Konfirmasi sukses setelah submit
+```
 
-### 🛡️ Panel Admin (Authorized)
-- ✅ Sistem login aman dengan sesi admin
-- ✅ Dashboard untuk melihat daftar lengkap tamu
-- ✅ Filter data tamu berdasarkan bulan/tahun
-- ✅ Aksi status tamu: **Terima**, **Tolak**, atau **Pending**
-- ✅ **Export PDF** - Laporan bulanan dalam format landscape A4
-- ✅ Manajemen akun admin
+## UML Class Diagram (tabel)
 
----
+Berikut adalah representasi class diagram dalam bentuk tabel untuk model yang diminta.
 
-## 🛠️ Teknologi yang Digunakan
+| Class | Atribut |
+|-------|---------|
+| **User** | `id` (int), `nama` (string), `email` (string), `password` (string) |
+| **Admin** | `id` (int), `nama` (string), `email` (string) |
+| **Report** | `id` (int), `user_id` (int), `isi_laporan` (text), `status` (string), `tanggal` (datetime) |
 
-| Teknologi | Versi | Fungsi |
-|-----------|-------|--------|
-| **Laravel** | 12 | Framework backend |
-| **PHP** | 8.2+ | Runtime server-side |
-| **MySQL/MariaDB** | 5.7+ | Database |
-| **PHP GD** | Extension | Pemrosesan gambar (untuk PDF) |
-| **DomPDF** | Via Barryvdh | Library generate PDF |
-| **Blade** | Native | Template engine |
-| **Tailwind CSS** | Via Vite | CSS framework |
-| **HTML5** | Latest | Markup |
+### Relasi
+- `User` 1..* `Report` (satu User dapat memiliki banyak Report)
+- `Admin` mengelola `Report` (Admin memiliki hak mengelola/meninjau laporan)
 
----
+## Use Case Diagram (gambar)
 
-## Database Schema (ERD)
+Masukkan gambar use case diagram Anda (file gambar) ke path `public/use_case_diagram.png` lalu gambar tersebut akan ditampilkan di README di bawah ini.
 
-### Diagram Entity-Relationship
+![Use Case Diagram](public/use_case_diagram.png)
 
-```mermaid
-erDiagram
-    ADMINS ||--o{ SESSIONS : "maintain"
-    BUKU_TAMUS ||--|| USERS : "reference (optional)"
-
-    ADMINS {
-        int id PK
-        string name
-        string email UK "unique"
-        string password
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    BUKU_TAMUS {
-        int id PK
-        string nama
-        string alamat
-        string no_telepon "nullable"
-        text keperluan
-        timestamp waktu_datang "default: now()"
-        string foto_wajah "nullable (path to storage)"
-        string status "default: pending | accept | reject"
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    USERS {
-        int id PK
-        string name
-        string email UK "unique"
-        timestamp email_verified_at "nullable"
-        string password
+_Catatan:_ jika Anda mengirim file gambar sekarang, saya dapat menambahkannya ke `public/` dan commit perubahan otomatis.
         string remember_token "nullable"
         timestamp created_at
         timestamp updated_at
@@ -482,79 +442,3 @@ Jika menemukan bug atau masalah, silakan:
 
 **Last Updated:** November 2025  
 **Version:** 1.0.0
-
-
-
-
----
-
-## UML Class Diagram
-
-Berikut adalah diagram kelas utama (UML) yang merepresentasikan model-model domain aplikasi: `BukuTamu`, `Admin`, `User`, `TamuArchive`, dan `Report`. Anda dapat menyalin blok PlantUML berikut ke file `.puml` dan merendernya.
-
-```plantuml
-@startuml
-skinparam classAttributeIconSize 0
-
-class BukuTamu {
-  +int id
-  +string nama
-  +string alamat
-  +string? no_telepon
-  +text keperluan
-  +datetime waktu_datang
-  +string? foto_wajah
-  +enum status
-  +datetime created_at
-  +datetime updated_at
-}
-
-class Admin {
-  +int id
-  +string name
-  +string email
-  +string password
-  +datetime created_at
-  +datetime updated_at
-}
-
-class User {
-  +int id
-  +string name
-  +string email
-  +datetime? email_verified_at
-  +string password
-  +string? remember_token
-  +datetime created_at
-  +datetime updated_at
-}
-
-class TamuArchive {
-  +int id
-  +int buku_tamu_id
-  +text archived_data
-  +datetime archived_at
-}
-
-class Report {
-  +int id
-  +string title
-  +text content
-  +datetime created_at
-}
-
-BukuTamu "1" o-- "0..*" TamuArchive : archived
-BukuTamu "*" --> "1" Admin : processed_by
-BukuTamu "*" --> "0..1" User : created_by
-Report "*" -- "*" BukuTamu : summarizes
-
-@enduml
-```
-
-### Cara Render
-- **VS Code**: gunakan extension `PlantUML` (jebbs.plantuml) lalu buka file `.puml`.
-- **Online**: gunakan `https://www.plantuml.com/plantuml`.
-- **CLI**: jalankan `plantuml diagram.puml`.
-
-(Informasi atribut mengikuti skema migrasi dan model pada repository.)
-`````
